@@ -1,0 +1,229 @@
+<!-- INCLUDE overall_header.html -->
+<!-- IF S_DM_QC_ADD and S_ADD_QUOTE -->
+<form action="{S_ACTION}" method="post">
+<div id="tabs">
+	<ul>
+		<!-- IF S_VIEW_QUOTE -->
+		 <li class="tab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_ADD_QUOTE -->
+		 <li class="tab activetab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_USER_LOGGED_IN -->
+		 <li class="tab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
+		<!-- ENDIF -->
+	</ul>
+</div>
+<div class="panel bg3">
+	<div class="inner">
+		 <div id="cp-menu">
+			<div class="cp-mini">
+				<div class="inner">
+					<dl class="mini">
+					 <dd><h3>{L_DM_QC_ADD_TITLE}</h3></dd>
+					 <dd>{L_DM_QC_ADD_TITLE_DESC}</dd>
+					</dl>
+				</div>
+			</div>
+		 </div>
+		 <div id="cp-main" class="ucp-main">
+		 <br />
+			<div class="panel">
+				<div class="inner">
+					<br />
+					<fieldset>
+					<dl>
+					 <dt><label>{L_DM_QC_QUOTE}{L_COLON}</label><br /><span class="qc-explain">{L_DM_QC_QUOTE_EXPLAIN}</span></dt>
+					 <dd><textarea id="quote" tabindex="3" class="inputbox" name="quote" cols="50" rows="3" ></textarea></dd>
+					</dl>
+					<dl>
+					 <dt><label>{L_DM_QC_AUTHOR}{L_COLON}</label><br /><span class="qc-explain">{L_DM_QC_AUTHOR_EXPLAIN}</span></dt>
+					 <dd><input type="text" class="inputbox autowidth" maxlength="255" name="author" size="50" value="" /></dd>
+					</dl>
+					</fieldset>
+					<fieldset class="submit-buttons">
+					{S_HIDDEN_FIELDS}
+					<input type="submit" tabindex="4" name="submit" value="{L_SUBMIT}" class="button1" />&nbsp;
+					</fieldset>
+			</div>
+		 </div>
+		</div>
+	</div>
+</div>
+</form>
+<!-- ENDIF -->
+<!-- IF S_DM_QC_OWN -->
+<div id="tabs">
+	<ul>
+		<!-- IF S_VIEW_QUOTE -->
+		 <li class="tab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_ADD_QUOTE -->
+		 <li class="tab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_USER_LOGGED_IN -->
+		 <li class="tab activetab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
+		<!-- ENDIF -->
+	</ul>
+</div>
+<div class="panel bg3">
+	<div class="inner">
+		 <div id="cp-menu">
+			<div class="cp-mini">
+				<div class="inner">
+					<dl class="mini">
+					 <dd><h3>{L_DM_QC_OWN_TITLE}</h3></dd>
+					 <dd>{L_DM_QC_OWN_TITLE_DESC}</dd>
+					</dl>
+				</div>
+			</div>
+		 </div>
+
+		 <div id="cp-main" class="ucp-main">
+		 <h2>{L_DM_QC_POSTER} {S_USERNAME}</h2>
+			<div class="panel">
+				<div class="inner">
+					 <dl>
+						<dd>
+							<br />
+							<table class="table1 forabg qc-header">
+								<thead>
+								 <tr>
+									<th class="qc-left"><span class="qc-quote-title">{L_DM_QC_QUOTE}</span></th>
+									<th class="qc-left">{L_DM_QC_AUTHOR}</th>
+									<th>{L_DM_QC_DATE}</th>
+									<th>{L_DM_QC_APPROVAL}</th>
+									<!-- IF S_DELETE_QUOTE -->
+									<th><span class="qc-delete">{L_DM_QC_DELETE}</span></th>
+									<!-- ENDIF -->
+								 </tr>
+								</thead>
+								<tbody>
+								<!-- BEGIN quotes -->
+								 <!-- IF quotes.S_ROW_COUNT is even --><tr class="bg2 qc-noborder-radius"><!-- ELSE --><tr class="bg3 qc-noborder-radius"><!-- ENDIF -->
+									<td class="qc-left">{quotes.QUOTE}</td>
+									<td class="qc-left qc-nowrap">{quotes.AUTHOR}</td>
+									<td class="qc-nowrap">{quotes.DATE}</td>
+									<td>{quotes.APPROVAL}</td>
+									<!-- IF S_DELETE_QUOTE -->
+									<td>{quotes.DELETE}</td>
+									<!-- ENDIF -->
+								 </tr>
+								 <!-- BEGINELSE -->
+								 <tr class="bg2 qc-noborder-radius">
+									<td colspan="<!-- IF S_DELETE_QUOTE -->5<!-- ELSE -->4<!-- ENDIF -->">{L_DM_QC_NO_QUOTES}</td>
+								 </tr>
+								<!-- END quotes -->
+								</tbody>
+							</table>
+						</dd>
+					 </dl>
+				</div>
+			</div>
+			<div class="action-bar bottom">
+			<!-- IF .pagination or TOTAL_QUOTES -->
+				<div class="pagination">
+					{TOTAL_QUOTES}
+					<!-- IF .pagination -->
+					<!-- INCLUDE pagination.html -->
+					<!-- ELSE -->
+					 &bull; {PAGE_NUMBER}
+					<!-- ENDIF -->
+				</div>
+			<!-- ENDIF -->
+		 </div>
+		 </div>
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_DM_QC_ALL and S_VIEW_QUOTE -->
+<div id="tabs">
+	<ul>
+		<!-- IF S_VIEW_QUOTE -->
+		 <li class="tab activetab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_ADD_QUOTE -->
+		 <li class="tab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
+		<!-- ENDIF -->
+		<!-- IF S_USER_LOGGED_IN -->
+		 <li class="tab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
+		<!-- ENDIF -->
+	</ul>
+</div>
+
+<div class="panel bg3">
+	<div class="inner">
+		 <div id="cp-menu">
+			<div class="cp-mini">
+				<div class="inner">
+					<dl class="mini">
+					 <dd><h3>{L_DM_QC_ALL_TITLE}</h3></dd>
+					 <dd>{L_DM_QC_ALL_TITLE_DESC}</dd>
+					</dl>
+				</div>
+			</div>
+		 </div>
+
+		 <div id="cp-main" class="ucp-main">
+		 <br />
+			<div class="panel">
+				<div class="inner">
+					 <dl>
+						<dd>
+							<br />
+							<table class="table1 forabg qc-header">
+								<thead>
+								 <tr>
+									<th class="qc-left"><span class="qc-quote-title">{L_DM_QC_QUOTE}</span></th>
+									<th class="qc-left">{L_DM_QC_AUTHOR}</th>
+									<th class="qc-nowrap">{L_DM_QC_POSTER}</th>
+									<th>{L_DM_QC_DATE}</th>
+								 </tr>
+								</thead>
+								<tbody>
+								<!-- BEGIN quotes_all -->
+								 <!-- IF quotes_all.S_ROW_COUNT is even --><tr class="bg2 qc-noborder-radius"><!-- ELSE --><tr class="bg3 qc-noborder-radius"><!-- ENDIF -->
+								 <td class="qc-left">{quotes_all.QUOTE} </td>
+								 <td class="qc-left qc-nowrap">{quotes_all.AUTHOR}</td>
+								 <td class="qc-nowrap">{quotes_all.POSTER}</td>
+								 <td class="qc-nowrap">{quotes_all.DATE}</td>
+								</tr>
+								<!-- BEGINELSE -->
+								<tr class="bg2 qc-noborder-radius">
+								 <td colspan="4">{L_DM_QC_NO_QUOTES}</td>
+								</tr>
+								<!-- END quotes_all -->
+								</tbody>
+							</table>
+						</dd>
+					 </dl>
+				</div>
+			</div>
+		 <div class="action-bar bottom">
+			<!-- IF .pagination or TOTAL_QUOTES -->
+				<div class="pagination">
+					{TOTAL_QUOTES}
+					<!-- IF .pagination -->
+					<!-- INCLUDE pagination.html -->
+					<!-- ELSE -->
+					 &bull; {PAGE_NUMBER}
+					<!-- ENDIF -->
+				</div>
+			<!-- ENDIF -->
+		 </div>
+		 </div>
+	</div>
+</div>
+<br />
+<form action="{S_QUOTES_ACTION}" method="post">
+<fieldset class="display-options">
+	<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
+	<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+</fieldset>
+</form>
+<!-- ENDIF -->
+
+<br /><div class="copyright qc-center"><a href="http://area53.die-muellers.org/" onclick="window.open(this.href); return false" title="{L_DM_QC_TITLE}" alt="{L_DM_QC_TITLE}">{L_DM_QC_COPYRIGHT}</a></div><div class="copyright qc-center"><a href="http://www.dmzx-web.net/" onclick="window.open(this.href); return false" title="{L_DM_QC_COPYRIGHT_DMZX_TITLE}" alt="{L_DM_QC_COPYRIGHT_DMZX_TITLE}">{L_DM_QC_COPYRIGHT_DMZX}</a></div>
+
+<!-- INCLUDE overall_footer.html -->

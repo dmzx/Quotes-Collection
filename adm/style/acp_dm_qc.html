@@ -1,0 +1,225 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_ERROR -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{ERROR_MSG}</p>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF S_QC_CONFIG -->
+	<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_CONFIG}</h1>
+	<p>{L_ACP_DM_QC_CONFIG_EXPLAIN}</p>
+
+	<form id="acp_dm_qc_config" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_ACP_DM_QC_CONFIG}</legend>
+			<dl>
+				<dt><label>{L_ACP_DM_QC_ENABLE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_ENABLE_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="qc_enable" value="1"<!-- IF QC_ENABLE --> id="qc_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="qc_enable" value="0"<!-- IF not QC_ENABLE --> id="qc_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_ACP_DM_QC_INDEX}{L_COLON}</label><br /><span>{L_ACP_DM_QC_INDEX_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="show_index" value="1"<!-- IF SHOW_INDEX --> id="show_index" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="show_index" value="0"<!-- IF not SHOW_INDEX --> id="show_index" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_ACP_DM_QC_GUESTS}{L_COLON}</label><br /><span>{L_ACP_DM_QC_GUESTS_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="guests_enable" value="1"<!-- IF GUESTS_ENABLE --> id="guests_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="guests_enable" value="0"<!-- IF not GUESTS_ENABLE --> id="guests_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_ACP_DM_QC_APPROVAL}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVAL_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="approval_enable" value="1"<!-- IF APPROVAL_ENABLE --> id="approval_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="approval_enable" value="0"<!-- IF not APPROVAL_ENABLE --> id="approval_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label for="pagination_acp">{L_ACP_DM_QC_PAGI_ACP}{L_COLON}</label><br /><span>{L_ACP_DM_QC_PAGI_ACP_EXPLAIN}</span></dt>
+				<dd><input type="text" id="pagination_acp" name="pagination_acp" value="{PAGINATION_ACP}" maxlength="8" size="10" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="pagination_acp">{L_ACP_DM_QC_PAGI_USER}{L_COLON}</label><br /><span>{L_ACP_DM_QC_PAGI_USER_EXPLAIN}</span></dt>
+				<dd><input type="text" id="pagination_user" name="pagination_user" value="{PAGINATION_USER}" maxlength="8" size="10" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="delay">{L_ACP_DM_QC_DELAY}{L_COLON}</label><br /><span>{L_ACP_DM_QC_DELAY_EXPLAIN}</span></dt>
+				<dd><input type="text" id="delay" name="delay_set" value="{DELAY_SET}" maxlength="8" size="10" /> min.</dd>
+			</dl>
+		</fieldset>
+
+		<!-- IF S_UPS_INSTALLED -->
+		<fieldset>
+			<legend>{L_ACP_DM_QC_UPS_TITLE}</legend>
+				<dl>
+					<dt><label for="ups_points">{ACP_DM_QC_UPS}{L_COLON}</label><br /><span>{ACP_DM_QC_UPS_EXPLAIN}</span></dt>
+					<dd><input type="text" id="ups_points" name="ups_points" value="{UPS_POINTS}" maxlength="8" size="10" /></dd>
+				</dl>
+		</fieldset>
+		<!-- ENDIF -->
+
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+	</form>
+<!-- ENDIF -->
+
+<!-- IF S_QC_LIST -->
+	<!-- IF S_QC_RELEASE -->
+		<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_RELEASE}</h1>
+		<p>{L_ACP_DM_QC_RELEASE_EXPLAIN}</p>
+	<!-- ELSE -->
+		<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_EDIT}</h1>
+		<p>{L_ACP_DM_QC_EDIT_EXPLAIN}</p>
+
+		<form id="add_quote" method="post" action="{S_ACTION}">
+		<fieldset class="tabulated">
+			<input type="hidden" name="action" value="add_quote" />
+			<input class="button2" name="add_quote" type="submit" value="{L_ACP_DM_QC_ADD}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+		</form>
+
+	<!-- ENDIF -->
+	<p>&nbsp;</p>
+	<!-- IF .pagination or TOTAL_QUOTES -->
+	<div class="pagination">
+		{TOTAL_QUOTES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+<!-- ENDIF -->
+	<table>
+		<thead>
+			<tr>
+				<th>{L_ACP_DM_QC_ID}</th>
+				<th>{L_ACP_DM_QC_QUOTE}</th>
+				<th>{L_ACP_DM_QC_AUTHOR}</th>
+				<th>{L_ACP_DM_QC_POSTER}</th>
+				<th>{L_ACP_DM_QC_DATE}</th>
+				<th>{L_ACP_DM_QC_APPROVE}</th>
+				<th>{L_ACTION}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN quotes -->
+			<!-- IF quotes.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+			<td>{quotes.ID}</td>
+			<td style="text-align: center;">{quotes.QUOTE} </td>
+			<td style="text-align: center;">{quotes.AUTHOR}</td>
+			<td style="text-align: center;">{quotes.POSTER}</td>
+			<td style="text-align: center;">{quotes.DATE}</td>
+			<td style="text-align: center;">{quotes.APPROVAL}</td>
+			<td>&nbsp;<a href="{quotes.U_EDIT}">{ICON_EDIT}</a> <a href="{quotes.U_DEL}">{ICON_DELETE}</a>&nbsp;</td>
+		</tr>
+		<!-- BEGINELSE -->
+			<tr>
+				<td colspan="<!-- IF S_CLEAR_ALLOWED -->7<!-- ELSE -->6<!-- ENDIF -->">{L_ACP_DM_QC_NO_QUOTES}</td>
+			</tr>
+		<!-- END quotes -->
+		</tbody>
+	</table>
+	<!-- IF .pagination or TOTAL_QUOTES -->
+	<div class="pagination">
+		{TOTAL_QUOTES}
+		<!-- IF .pagination -->
+			<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+			&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+	<!-- ENDIF -->
+	<!-- IF not S_QC_RELEASE -->
+		<form action="{S_QUOTES_ACTION}" method="post">
+		<fieldset class="display-options">
+			<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;
+			<input class="button2" type="submit" name="sort" value="{L_GO}" />
+		</fieldset>
+		</form>
+	<!-- ENDIF -->
+<!-- ENDIF -->
+
+<!-- IF S_QC_ADD -->
+<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_ADD}</h1>
+<p>{L_ACP_DM_QC_ADD_EXPLAIN}</p>
+
+<form method="post" action="{U_ACTION}">
+	<p>
+		<input type="hidden" name="add_new" value="add_new" />
+	</p>
+	<fieldset>
+		<!-- IF S_QC_EDIT -->
+			<legend>{L_ACP_DM_QC_EDIT}</legend>
+		<!-- ELSE -->
+			<legend>{L_ACP_DM_QC_ADD}</legend>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label>{L_ACP_DM_QC_QUOTE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_QUOTE_EXPLAIN}</span></dt>
+			<dd><textarea rows="9" name="quote" cols="52">{QUOTE}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label>{L_ACP_DM_QC_AUTHOR}{L_COLON}</label><br /><span>{L_ACP_DM_QC_AUTHOR_EXPLAIN}</span></dt>
+			<dd><input type="text" name="author" size="52" value="{AUTHOR}" /></dd>
+		</dl>
+		<!-- IF S_QC_APPROVAL_NEEDED -->
+			<dl>
+				<dt><label>{L_ACP_DM_QC_APPROVE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVE_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="approved" value="1"<!-- IF APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="approved" value="0"<!-- IF not APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+		<!-- ENDIF -->
+	</fieldset>
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" id="submit" name="submit" value="{L_SUBMIT}" type="submit" />&nbsp;
+		<input class="button2" id="reset" name="reset" value="{L_RESET}" type="reset" />
+	</fieldset>
+</form>
+<!-- ENDIF -->
+
+<!-- IF S_QC_EDIT -->
+<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_EDIT}</h1>
+<p>{L_ACP_DM_QC_EDIT_EXPLAIN}</p>
+
+<form method="post" action="{U_ACTION}">
+	<p>
+		<input type="hidden" name="id" value="{ID}" />
+		<input type="hidden" name="poster_id" value="{POSTER_ID}" />
+	</p>
+	<fieldset>
+		<!-- IF S_QC_EDIT -->
+			<legend>{L_ACP_DM_QC_EDIT}</legend>
+		<!-- ELSE -->
+			<legend>{L_ACP_DM_QC_ADD}</legend>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label>{L_ACP_DM_QC_QUOTE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_QUOTE_EXPLAIN}</span></dt>
+			<dd><textarea rows="9" name="quote" cols="52">{QUOTE}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label>{L_ACP_DM_QC_AUTHOR}{L_COLON}</label><br /><span>{L_ACP_DM_QC_AUTHOR_EXPLAIN}</span></dt>
+			<dd><input type="text" name="author" size="52" value="{AUTHOR}" /></dd>
+		</dl>
+		<!-- IF S_QC_APPROVAL_NEEDED -->
+			<dl>
+				<dt><label>{L_ACP_DM_QC_APPROVE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVE_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="approved" value="1"<!-- IF APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="approved" value="0"<!-- IF not APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+		<!-- ENDIF -->
+	</fieldset>
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" id="submit" name="submit" value="{L_SUBMIT}" type="submit" />&nbsp;
+		<input class="button2" id="reset" name="reset" value="{L_RESET}" type="reset" />
+	</fieldset>
+</form>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

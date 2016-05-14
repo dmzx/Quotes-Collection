@@ -1,0 +1,3 @@
+parameters:
+    dmzx.quotescollection.table.dm_qc: %core.table_prefix%dm_qc
+    dmzx.quotescollection.table.dm_qc_config: %core.table_prefix%dm_qc_config

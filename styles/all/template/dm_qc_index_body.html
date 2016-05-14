@@ -1,0 +1,41 @@
+<!-- IF S_DM_QUOTES_ENABLE and S_DM_SHOW_INDEX -->
+	<!-- IF S_ADMIN_CHECK -->
+		<div id="message" class="rules">
+		 <div class="inner">
+			<strong>{L_INFORMATION}{L_COLON}</strong> {NUMBER_QUOTES} {GO_ACP}
+		 </div>
+		</div>
+	<!-- ENDIF -->
+	<!-- IF S_USER_LOGGED_IN and S_VIEW_QUOTE or S_DM_GUESTS_ENABLE and S_VIEW_QUOTE -->
+		<div class="forabg qc-quotes">
+		 <div class="inner">
+			<ul class="topiclist">
+				<li class="header">
+					<dl>
+					 <dt>{L_DM_QC_HEADER}</dt>
+					</dl>
+				</li>
+			</ul>
+			<ul class="topiclist forums">
+				<li>
+					<dl>
+					 <dt>
+						<div class="qc-quote-body">
+							<!-- IF S_USER_LOGGED_IN -->
+							<span class="qc-add">
+								<a href="{U_ALL_QUOTES}">{L_DM_QC_ALL}</a> <!-- IF S_ADD_QUOTE -->| <a href="{U_ADD_QUOTE}">{L_DM_QC_ADD}</a><!-- ENDIF --> | <a href="{U_OWN_QUOTES}">{L_DM_QC_OWN}</a>
+							</span>
+							<!-- ENDIF -->
+							<span>{POSTED_BY}</span><hr />
+							<span class="qc-quote">{L_DM_QC_QUOTES} {QUOTE}</span>
+							<span class="qc-author">{AUTHOR}</span>
+						</div>
+					 </dt>
+					 <dd style="border: none"></dd>
+					</dl>
+				</li>
+			</ul>
+		 </div>
+		</div>
+	<!-- ENDIF -->
+<!-- ENDIF -->

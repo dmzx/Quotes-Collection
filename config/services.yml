@@ -1,0 +1,34 @@
+imports:
+    - { resource: tables.yml }
+services:
+    dmzx.quotescollection.listener:
+        class: dmzx\quotescollection\event\listener
+        arguments:
+            - '@user'
+            - '@template'
+            - '@dbal.conn'
+            - '@auth'
+            - '@controller.helper'
+            - '@cache'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%dmzx.quotescollection.table.dm_qc%'
+            - '%dmzx.quotescollection.table.dm_qc_config%'
+        tags:
+            - { name: event.listener }
+    dmzx.quotescollection.controller:
+        class: dmzx\quotescollection\controller\main
+        arguments:
+            - '@template'
+            - '@user'
+            - '@auth'
+            - '@dbal.conn'
+            - '@request'
+            - '@config'
+            - '@controller.helper'
+            - '@cache'
+            - '@pagination'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%dmzx.quotescollection.table.dm_qc%'
+            - '%dmzx.quotescollection.table.dm_qc_config%'              

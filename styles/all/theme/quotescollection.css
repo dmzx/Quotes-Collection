@@ -1,0 +1,30 @@
+/* DM Quotes Collection Stylesheet */
+.icon-quotes { background-image: url("./images/icon_quotes.gif"); }
+
+/* Random Quote Index */
+.qc-quotes { margin-top: 6px;font-size: 1.0em; }
+
+.qc-quote-body { padding: 8px; }
+
+.qc-add { float: right; }
+
+.qc-quote { font-size: 1.2em; }
+
+.qc-author { float: right;font-style: italic; }
+
+/* Show All Quotes - Add Quote Page */
+.qc-header { border:none;text-align: center; }
+
+.qc-quote-title { line-height: 20px;margin-left: -4px; }
+
+.qc-explain { font-size: 0.9em; }
+
+.qc-delete { display: none; }
+
+.qc-nowrap { white-space: nowrap }
+
+.qc-left { text-align: left; }
+
+.qc-center { text-align: center; }
+
+.qc-noborder-radius { border-radius: none; }
