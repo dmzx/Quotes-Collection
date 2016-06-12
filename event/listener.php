@@ -114,7 +114,7 @@ class listener implements EventSubscriberInterface
 	}
 	public function index_modify_page_title($event)
 	{
-		
+
 		if (($dm_qc_config = $this->cache->get('_quote_config')) === false)
 		{
 			// Read out the config table
