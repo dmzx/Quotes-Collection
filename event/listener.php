@@ -153,7 +153,7 @@ class listener implements EventSubscriberInterface
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ( $row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes == 1 )
+		if ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes == 1)
 		{
 			$go_acp = append_sid($this->phpbb_root_path . 'adm/index.' . $this->phpEx . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
 			$this->template->assign_vars(array(
@@ -162,7 +162,7 @@ class listener implements EventSubscriberInterface
 				'GO_ACP'		=> sprintf($this->user->lang['DM_QC_CHECK_ACP'], '<a href="' . $go_acp . '">', '</a>'),
 			));
 		}
-		elseif ( $row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1 )
+		else if ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1)
 		{
 			$go_acp = append_sid($this->phpbb_root_path . 'adm/index.' . $this->phpEx . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
 			$this->template->assign_vars(array(
@@ -197,7 +197,7 @@ class listener implements EventSubscriberInterface
 		$result = $this->db->sql_query_limit($sql, 1);
 		$row = $this->db->sql_fetchrow($result);
 
-		if ( !$row || !$row['approve'] )
+		if (!$row || !$row['approve'])
 		{
 			return;
 		}
@@ -207,21 +207,21 @@ class listener implements EventSubscriberInterface
 			$author = ($row['author'] == '') ? $this->user->lang['DM_QC_NO_AUTHOR'] : sprintf($this->user->lang['DM_QC_QUOTE_AUTHOR'], $row['author']);
 			$poster = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
 
-			if ( $dm_qc_config['qc_enable'] )
+			if ($dm_qc_config['qc_enable'])
 			{
 				$this->template->assign_vars(array(
 					'S_DM_QUOTES_ENABLE' => true,
 				));
 			}
 
-			if ( $dm_qc_config['qc_guests'] )
+			if ($dm_qc_config['qc_guests'])
 			{
 				$this->template->assign_vars(array(
 					'S_DM_GUESTS_ENABLE' => true,
 				));
 			}
 
-			if ( $dm_qc_config['show_index'] )
+			if ($dm_qc_config['show_index'])
 			{
 				$this->template->assign_vars(array(
 					'S_DM_SHOW_INDEX' => true,

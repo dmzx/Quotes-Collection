@@ -98,7 +98,7 @@ class main
 		/**
 		* Check if user is allowed to see quotes
 		*/
-		if ( !$this->auth->acl_get('u_dm_qc_view') )
+		if (!$this->auth->acl_get('u_dm_qc_view'))
 		{
 			trigger_error('NOT_AUTHORISED');
 		}
@@ -150,7 +150,7 @@ class main
 		{
 			case 'add':
 			// Exclude Bots and Guests
-			if ( $this->user->data['is_bot'] || !$this->user->data['is_registered'] || !$this->auth->acl_get('u_dm_qc_add') )
+			if ($this->user->data['is_bot'] || !$this->user->data['is_registered'] || !$this->auth->acl_get('u_dm_qc_add'))
 			{
 				trigger_error('NOT_AUTHORISED');
 			}
@@ -169,7 +169,7 @@ class main
 					$allow_bbcode = $allow_urls = $allow_smilies = true;
 					generate_text_for_storage($quote, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
 
-					if ( $dm_qc_config['approval_needed'] )
+					if ($dm_qc_config['approval_needed'])
 					{
 						$approved = 0;
 					}
@@ -178,12 +178,12 @@ class main
 						$approved = 1;
 					}
 
-					if ( $this->auth->acl_get('a_forum') )
+					if ($this->auth->acl_get('a_forum'))
 					{
 						$approved = 1;
 					}
 
-					if ( $quote == '' )
+					if ($quote == '')
 					{
 						$message = $this->user->lang['DM_QC_QUOTE_ERROR'] . '<br /><br /><a href="' . $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'add')) . '">&laquo; ' . $this->user->lang['DM_QC_BACK_TO_PREV'] . '</a>';
 						trigger_error($message);
@@ -205,16 +205,16 @@ class main
 					add_log('user', $this->user->data['user_id'], 'LOG_USER_QUOTE_ADDED');
 
 					// UPS part
-					if ( defined('IN_ULTIMATE_POINTS') && $this->config['points_enable'] )
+					if (defined('IN_ULTIMATE_POINTS') && $this->config['points_enable'])
 					{
-						if ( $dm_qc_config['approval_needed'] && $dm_qc_config['ups_points'] > 0 && $approved = 0 )
+						if ($dm_qc_config['approval_needed'] && $dm_qc_config['ups_points'] > 0 && $approved = 0)
 						{
 							$message = sprintf($this->user->lang['DM_QC_QUOTE_SUC_UPS_APP'], $dm_qc_config['ups_points'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_quotescollection_controller') . '">&laquo; ' . $this->user->lang['DM_QC_BACK_TO_MAIN'] . '</a>';
 							trigger_error($message);
 						}
 						else
 						{
-							if ( !function_exists('add_points') )
+							if (!function_exists('add_points'))
 							{
 								include($this->phpbb_root_path . 'includes/points/functions_points.' . $this->phpEx);
 							}
@@ -226,7 +226,7 @@ class main
 						}
 					}
 
-					if ( $dm_qc_config['approval_needed'] && ($dm_qc_config['ups_points'] == 0 || !defined('IN_ULTIMATE_POINTS') || !$this->config['points_enable']) )
+					if ($dm_qc_config['approval_needed'] && ($dm_qc_config['ups_points'] == 0 || !defined('IN_ULTIMATE_POINTS') || !$this->config['points_enable']))
 					{
 						$message = $this->user->lang['DM_QC_QUOTE_SUC_APP'] . '<br /><br /><a href="' . $this->helper->route('dmzx_quotescollection_controller') . '">&laquo; ' . $this->user->lang['DM_QC_BACK_TO_MAIN'] . '</a>';
 						trigger_error($message);
@@ -252,7 +252,7 @@ class main
 						$check_time = $last_post_date + (60 * $dm_qc_config['delay_set']);
 						$this->db->sql_freeresult($result);
 
-						if ( $check_time > time() )
+						if ($check_time > time())
 						{
 							// Show error
 							$minutes = ($dm_qc_config['delay_set'] > 1) ? $this->user->lang['DM_QC_MINUTES'] : $this->user->lang['DM_QC_MINUTE'];
@@ -263,12 +263,12 @@ class main
 
 					$this->template->assign_vars(array(
 						'S_DM_QC_ADD'	=> true,
-						'ID'		=> $id,
-						'QUOTE'		=> $quote,
-						'AUTHOR'	=> $author,
-						'POSTER'	=> $poster,
-						'DATE'		=> $date,
-						'APPROVED'	=> $approved,
+						'ID'			=> $id,
+						'QUOTE'			=> $quote,
+						'AUTHOR'		=> $author,
+						'POSTER'		=> $poster,
+						'DATE'			=> $date,
+						'APPROVED'		=> $approved,
 						'U_DM_QC_MAIN' 	=> $this->helper->route('dmzx_quotescollection_controller'),
 						'U_DM_QC_ADD' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'add')),
 						'U_DM_QC_OWN' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'own')),
@@ -279,7 +279,7 @@ class main
 
 				case 'own':
 				// Exclude Bots and Guests
-				if ( $this->user->data['is_bot'] || !$this->user->data['is_registered'] )
+				if ($this->user->data['is_bot'] || !$this->user->data['is_registered'])
 				{
 					redirect(append_sid("{$this->phpbb_root_path}ucp.$this->phpEx?mode=login"));
 				}
@@ -398,7 +398,7 @@ class main
 					ORDER BY ' . $sql_sort_order;
 				$results = $this->db->sql_query_limit($sql, $number, $start);
 
-				while($row = $this->db->sql_fetchrow($results))
+				while ($row = $this->db->sql_fetchrow($results))
 				{
 					$this->template->assign_block_vars('quotes_all', array(
 						'ID'			=> $row['id'],
@@ -420,11 +420,10 @@ class main
 					'S_SELECT_SORT_DIR'	=> $s_sort_dir,
 					'S_SELECT_SORT_KEY'	=> $s_sort_key,
 					'TOTAL_QUOTES'		=> ($total_quotes == 1) ? $this->user->lang['DM_QC_SINGLE'] : sprintf($this->user->lang['DM_QC_MULTI'], $total_quotes),
-
-					'U_DM_QC_MAIN' 	=> $this->helper->route('dmzx_quotescollection_controller'),
-					'U_DM_QC_ADD' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'add')),
-					'U_DM_QC_OWN' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'own')),
-					'U_DM_QC_ALL' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all')),
+					'U_DM_QC_MAIN' 		=> $this->helper->route('dmzx_quotescollection_controller'),
+					'U_DM_QC_ADD' 		=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'add')),
+					'U_DM_QC_OWN' 		=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'own')),
+					'U_DM_QC_ALL' 		=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all')),
 				));
 
 				break;
