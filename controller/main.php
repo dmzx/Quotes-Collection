@@ -38,11 +38,17 @@ class main
 	/** @var \phpbb\pagination */
 	protected $pagination;
 
-	/** @var string */
-	protected $phpbb_root_path;
+	/** @var \phpbb\log\log_interface */
+	protected $log;
+
+	/** @var \phpbb\extension\manager */
+	protected $extension_manager;
 
 	/** @var string */
-	protected $phpEx;
+	protected $root_path;
+
+	/** @var string */
+	protected $php_ext;
 
 	/** @var string */
 	protected $dm_qc_table;
@@ -62,13 +68,31 @@ class main
 	* @param \phpbb\controller\helper		 	$helper
 	* @param \phpbb\cache\service		 		$cache
 	* @param \phpbb\pagination					$pagination
-	* @param									$phpbb_root_path
-	* @param									$phpEx
-	* @param									$dm_qc_table
-	* @param									$dm_qc_config_table
+	* @param \\phpbb\log\log_interface			$log
+	* @param \phpbb\extension\manager 			$extension_manager
+	* @param string								$root_path
+	* @param string								$php_ext
+	* @param string								$dm_qc_table
+	* @param string								$dm_qc_config_table
 	*
 	*/
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\cache\service $cache, \phpbb\pagination $pagination, $phpbb_root_path, $phpEx, $dm_qc_table, $dm_qc_config_table)
+	public function __construct(
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\auth\auth $auth,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\cache\service $cache,
+		\phpbb\pagination $pagination,
+		\phpbb\log\log_interface $log,
+		\phpbb\extension\manager $extension_manager,
+		$root_path,
+		$php_ext,
+		$dm_qc_table,
+		$dm_qc_config_table
+	)
 	{
 		$this->template 			= $template;
 		$this->user 				= $user;
@@ -79,8 +103,10 @@ class main
 		$this->helper 				= $helper;
 		$this->cache 				= $cache;
 		$this->pagination 			= $pagination;
-		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->phpEx 				= $phpEx;
+		$this->log 					= $log;
+		$this->extension_manager	= $extension_manager;
+		$this->root_path 			= $root_path;
+		$this->php_ext 				= $php_ext;
 		$this->dm_qc_table 			= $dm_qc_table;
 		$this->dm_qc_config_table 	= $dm_qc_config_table;
 	}
@@ -92,7 +118,7 @@ class main
 		*/
 		if ($this->user->data['is_bot'])
 		{
-			redirect(append_sid("{$this->phpbb_root_path}index.$this->phpEx"));
+			redirect(append_sid("{$this->root_path}index.$this->php_ext"));
 		}
 
 		/**
@@ -139,27 +165,24 @@ class main
 
 		$start = $this->request->variable('start', 0);
 		$number = $dm_qc_config['pagination_user'];
+
 		$board_url = generate_board_url() . '/';
 
 		$id = $quote = $author = $poster = $date = $approve = $approved = '';
 
 		$mode = $this->request->variable('mode', '');
-		$submit = (isset($_POST['submit'])) ? true : false;
 
 		switch ($mode)
 		{
 			case 'add':
-			// Exclude Bots and Guests
-			if ($this->user->data['is_bot'] || !$this->user->data['is_registered'] || !$this->auth->acl_get('u_dm_qc_add'))
-			{
-				trigger_error('NOT_AUTHORISED');
-			}
-
-				if (isset($_POST['submit']))
+				// Exclude Bots and Guests
+				if ($this->user->data['is_bot'] || !$this->user->data['is_registered'] || !$this->auth->acl_get('u_dm_qc_add'))
 				{
-					$action = (!isset($_GET['action'])) ? '' : $_GET['action'];
-					$action = ((isset($_POST['submit'])) ? 'add' : $action );
+					trigger_error('NOT_AUTHORISED');
+				}
 
+				if ($this->request->is_set_post('submit'))
+				{
 					$id = $this->request->variable('id', 0);
 					$quote = $this->request->variable('quote', '', true);
 					$author = $this->request->variable('author', '', true);
@@ -202,29 +225,9 @@ class main
 					);
 
 					$this->db->sql_query('INSERT INTO ' . $this->dm_qc_table .' ' . $this->db->sql_build_array('INSERT', $sql_ary));
-					add_log('user', $this->user->data['user_id'], 'LOG_USER_QUOTE_ADDED');
 
-					// UPS part
-					if (defined('IN_ULTIMATE_POINTS') && $this->config['points_enable'])
-					{
-						if ($dm_qc_config['approval_needed'] && $dm_qc_config['ups_points'] > 0 && $approved = 0)
-						{
-							$message = sprintf($this->user->lang['DM_QC_QUOTE_SUC_UPS_APP'], $dm_qc_config['ups_points'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_quotescollection_controller') . '">&laquo; ' . $this->user->lang['DM_QC_BACK_TO_MAIN'] . '</a>';
-							trigger_error($message);
-						}
-						else
-						{
-							if (!function_exists('add_points'))
-							{
-								include($this->phpbb_root_path . 'includes/points/functions_points.' . $this->phpEx);
-							}
-
-							add_points($this->user->data['user_id'], $dm_qc_config['ups_points']);
-
-							$message = sprintf($this->user->lang['DM_QC_QUOTE_SUC_UPS'], $dm_qc_config['ups_points'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_quotescollection_controller') . '">&laquo; ' . $this->user->lang['DM_QC_BACK_TO_MAIN'] . '</a>';
-							trigger_error($message);
-						}
-					}
+					// Add action to the user log
+					$this->log->add('user', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_QUOTE_ADDED', time(), array('reportee_id' => $this->user->data['user_id'], $this->user->data['username']));
 
 					if ($dm_qc_config['approval_needed'] && ($dm_qc_config['ups_points'] == 0 || !defined('IN_ULTIMATE_POINTS') || !$this->config['points_enable']))
 					{
@@ -240,7 +243,7 @@ class main
 				else
 				{
 					// Check, if user added a quote within the last xx minutes
-					if ( $dm_qc_config['delay_set'] > 0 )
+					if ($dm_qc_config['delay_set'] > 0)
 					{
 						$sql = 'SELECT post_date
 							FROM ' . $this->dm_qc_table . '
@@ -275,13 +278,13 @@ class main
 						'U_DM_QC_ALL' 	=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all')),
 					));
 				}
-				break;
+			break;
 
-				case 'own':
+			case 'own':
 				// Exclude Bots and Guests
 				if ($this->user->data['is_bot'] || !$this->user->data['is_registered'])
 				{
-					redirect(append_sid("{$this->phpbb_root_path}ucp.$this->phpEx?mode=login"));
+					redirect(append_sid("{$this->root_path}ucp.$this->php_ext?mode=login"));
 				}
 
 				// Count number of quotes
@@ -296,7 +299,7 @@ class main
 				$sql = 'SELECT q.*, u.*
 					FROM ' . $this->dm_qc_table . ' q
 					LEFT JOIN ' . USERS_TABLE . ' u
-					ON q.poster = u.user_id
+						ON q.poster = u.user_id
 					WHERE u.user_id = ' . $this->user->data['user_id'] . '
 					ORDER by id';
 				$result = $this->db->sql_query_limit($sql, $number, $start);
@@ -329,9 +332,9 @@ class main
 					'U_DM_QC_ALL' 		=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all')),
 				));
 
-				break;
+			break;
 
-				case 'delete':
+			case 'delete':
 				$delete_id = $this->request->variable('id', 0);
 				$back_to = $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'own'));
 
@@ -343,15 +346,18 @@ class main
 				if (confirm_box(true))
 				{
 					$sql = 'DELETE FROM ' . $this->dm_qc_table . '
-						WHERE id = '. $delete_id;
+						WHERE id = ' . $delete_id;
 					$this->db->sql_query($sql);
-					add_log('user', $this->user->data['user_id'], 'LOG_USER_QUOTE_DELETED', $delete_id);
+
+					// Add action to the user log
+					$this->log->add('user', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_QUOTE_DELETED', time(), array($delete_id, 'reportee_id' => $this->user->data['user_id'], $this->user->data['username']));
+
 					trigger_error($this->user->lang['DM_QC_DELETED'] . '<br /><br />' . sprintf($this->user->lang['DM_QC_BACK'], '<a href="' . $back_to . '">', '</a>'));
 
 				}
 				else
 				{
-					if (isset($_POST['cancel']))
+					if ($this->request->is_set_post('cancel'))
 					{
 						redirect($this->helper->route('dmzx_quotescollection_controller'));
 					}
@@ -364,10 +370,10 @@ class main
 						);
 					}
 				}
-				break;
+			break;
 
-				default:
-				case 'all':
+			default:
+			case 'all':
 				// The sorting stuff
 				$sort_days	= $this->request->variable('st', 0);
 				$sort_key	= $this->request->variable('sk', 'quote');
@@ -408,7 +414,7 @@ class main
 						'DATE'			=> $this->user->format_date($row['post_date']),
 					));
 				}
-				$this->db->sql_freeresult($result);
+				$this->db->sql_freeresult($results);
 
 				$pagination_url = $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all'));
 				//Start pagination
@@ -426,15 +432,36 @@ class main
 					'U_DM_QC_ALL' 		=> $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'all')),
 				));
 
-				break;
+			break;
 		}
 
 		$this->template->assign_vars(array(
-			'S_VIEW_QUOTE'	=> ($this->auth->acl_gets('u_dm_qc_view')) ? true : false,
-			'S_ADD_QUOTE'	=> ($this->auth->acl_gets('u_dm_qc_add')) ? true : false,
-			)
-		);
+			'S_VIEW_QUOTE'		=> ($this->auth->acl_gets('u_dm_qc_view')) ? true : false,
+			'S_ADD_QUOTE'		=> ($this->auth->acl_gets('u_dm_qc_add')) ? true : false,
+			'DM_QC_VERSION'		=> $this->config['dm_qc_version'],
+			'DM_QC_FOOTER_VIEW'	=> true,
+		));
+		$this->assign_authors();
 
 		return $this->helper->render('dmbody.html', $this->user->lang('DM_QC_TITLE'));
+	}
+
+	protected function assign_authors()
+	{
+		$md_manager = $this->extension_manager->create_extension_metadata_manager('dmzx/quotescollection', $this->template);
+		$meta = $md_manager->get_metadata();
+		$author_names = array();
+		$author_homepages = array();
+
+		foreach (array_slice($meta['authors'], 0, 1) as $author)
+		{
+			$author_names[] = $author['name'];
+			$author_homepages[] = sprintf('<a href="%1$s" title="%2$s">%2$s</a>', $author['homepage'], $author['name']);
+		}
+		$this->template->assign_vars(array(
+			'DM_QC_DISPLAY_NAME'		=> $meta['extra']['display-name'],
+			'DM_QC_AUTHOR_NAMES'		=> implode(' &amp; ', $author_names),
+			'DM_QC_AUTHOR_HOMEPAGES'	=> implode(' &amp; ', $author_homepages),
+		));
 	}
 }

@@ -3,9 +3,13 @@
 	"type": "phpbb-extension",
 	"description": "The DM Quotes Collection is a simple tool, where you can start collecting quotes. These will be display on the index page in a random order. There are different settings possible in the ACP, where you also can manage the quotes.",
 	"homepage": "http://www.dmzx-web.net",
-	"version": "1.0.3",
-	"time": "2015-10-25",
-	"keywords": ["phpbb", "extension", "quotescollection"],
+	"version": "1.0.4",
+	"time": "2017-03-10",
+	"keywords": [
+		"phpbb",
+		"extension",
+		"quotescollection"
+	],
 	"license": "GPL-2.0",
 	"authors": [
 		{
@@ -13,10 +17,16 @@
 			"homepage": "http://www.dmzx-web.net",
 			"email": "info@dmzx-web.net",
 			"role": "Extension Developer"
+		},
+		{
+			"name": "Die Muellers Dot Org",
+			"homepage": "http://die-muellers.org",
+			"role": "Original MOD author"
 		}
 	],
 	"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.3.3",
+		"phpbb/phpbb": ">=3.1.0,<3.3"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"
@@ -24,7 +34,7 @@
 	"extra": {
 		"display-name": "Quotes Collection",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.0,<3.2.0@dev"
+			"phpbb/phpbb": ">=3.1.0,<3.3"
 		},
 		"version-check": {
 			"host": "www.dmzx-web.net",

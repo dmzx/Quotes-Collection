@@ -28,7 +28,22 @@ services:
             - '@controller.helper'
             - '@cache'
             - '@pagination'
+            - '@log'
+            - '@ext.manager'
             - '%core.root_path%'
             - '%core.php_ext%'
+            - '%dmzx.quotescollection.table.dm_qc%'
+            - '%dmzx.quotescollection.table.dm_qc_config%'
+    dmzx.quotescollection.controller.admin.controller:
+        class: dmzx\quotescollection\controller\admin_controller
+        arguments:
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@request'
+            - '@config'
+            - '@cache'
+            - '@pagination'
+            - '@log'
             - '%dmzx.quotescollection.table.dm_qc%'
             - '%dmzx.quotescollection.table.dm_qc_config%'              

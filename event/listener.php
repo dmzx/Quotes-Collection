@@ -35,10 +35,10 @@ class listener implements EventSubscriberInterface
 	protected $cache;
 
 	/** @var string */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string */
 	protected $dm_qc_table;
@@ -55,13 +55,24 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\auth\auth					$auth
 	* @param \phpbb\controller\helper			$helper
 	* @param \phpbb\cache\service		 		$cache
-	* @param									$phpbb_root_path
-	* @param									$phpEx
-	* @param									$dm_qc_table
-	* @param									$dm_qc_config_table
+	* @param string								$root_path
+	* @param string								$php_ext
+	* @param string								$dm_qc_table
+	* @param string								$dm_qc_config_table
 	*
 	*/
-	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\cache\service $cache, $phpbb_root_path, $phpEx, $dm_qc_table, $dm_qc_config_table)
+	public function __construct(
+		\phpbb\user $user,
+		\phpbb\template\template $template,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\auth\auth $auth,
+		\phpbb\controller\helper $helper,
+		\phpbb\cache\service $cache,
+		$root_path,
+		$php_ext,
+		$dm_qc_table,
+		$dm_qc_config_table
+	)
 	{
 		$this->user					= $user;
 		$this->template				= $template;
@@ -69,8 +80,8 @@ class listener implements EventSubscriberInterface
 		$this->auth 				= $auth;
 		$this->helper 				= $helper;
 		$this->cache 				= $cache;
-		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->phpEx 				= $phpEx;
+		$this->root_path 			= $root_path;
+		$this->php_ext 				= $php_ext;
 		$this->dm_qc_table 			= $dm_qc_table;
 		$this->dm_qc_config_table 	= $dm_qc_config_table;
 	}
@@ -107,14 +118,13 @@ class listener implements EventSubscriberInterface
 	public function page_header($event)
 	{
 		$this->template->assign_vars(array(
-			'S_QC_EXIST'	=> true,
+			'S_QC_EXIST'	=> $this->auth->acl_gets('u_dm_qc_view'),
 			'L_DM_QUOTES'	=> $this->user->lang['DM_QC_QUOTE_TITLE'],
 			'U_DM_QUOTES'	=> $this->helper->route('dmzx_quotescollection_controller'),
 		));
 	}
 	public function index_modify_page_title($event)
 	{
-
 		if (($dm_qc_config = $this->cache->get('_quote_config')) === false)
 		{
 			// Read out the config table
@@ -155,16 +165,18 @@ class listener implements EventSubscriberInterface
 
 		if ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes == 1)
 		{
-			$go_acp = append_sid($this->phpbb_root_path . 'adm/index.' . $this->phpEx . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
+			$go_acp = append_sid($this->root_path . 'adm/index.' . $this->php_ext . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
+
 			$this->template->assign_vars(array(
 				'S_ADMIN_CHECK'	=> true,
 				'NUMBER_QUOTES'	=> $this->user->lang['DM_QC_CHECK_QUOTE'],
 				'GO_ACP'		=> sprintf($this->user->lang['DM_QC_CHECK_ACP'], '<a href="' . $go_acp . '">', '</a>'),
 			));
 		}
-		else if ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1)
+		elseif ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1)
 		{
-			$go_acp = append_sid($this->phpbb_root_path . 'adm/index.' . $this->phpEx . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
+			$go_acp = append_sid($this->root_path . 'adm/index.' . $this->php_ext . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
+
 			$this->template->assign_vars(array(
 				'S_ADMIN_CHECK'	=> true,
 				'NUMBER_QUOTES'	=> sprintf($this->user->lang['DM_QC_CHECK_QUOTES'], $number_quotes),
@@ -172,6 +184,7 @@ class listener implements EventSubscriberInterface
 			));
 		}
 		$sql_layer = $this->db->get_sql_layer();
+
 		switch ($sql_layer)
 		{
 			case 'postgres':
@@ -197,6 +210,21 @@ class listener implements EventSubscriberInterface
 		$result = $this->db->sql_query_limit($sql, 1);
 		$row = $this->db->sql_fetchrow($result);
 
+		if ($dm_qc_config['qc_enable'])
+		{
+			$this->template->assign_var('S_DM_QUOTES_ENABLE', true);
+		}
+
+		if ($dm_qc_config['qc_guests'])
+		{
+			$this->template->assign_var('S_DM_GUESTS_ENABLE', true);
+		}
+
+		if ($dm_qc_config['show_index'])
+		{
+			$this->template->assign_var('S_DM_SHOW_INDEX', true);
+		}
+
 		if (!$row || !$row['approve'])
 		{
 			return;
@@ -206,27 +234,6 @@ class listener implements EventSubscriberInterface
 			$quote = $row['quote'];
 			$author = ($row['author'] == '') ? $this->user->lang['DM_QC_NO_AUTHOR'] : sprintf($this->user->lang['DM_QC_QUOTE_AUTHOR'], $row['author']);
 			$poster = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
-
-			if ($dm_qc_config['qc_enable'])
-			{
-				$this->template->assign_vars(array(
-					'S_DM_QUOTES_ENABLE' => true,
-				));
-			}
-
-			if ($dm_qc_config['qc_guests'])
-			{
-				$this->template->assign_vars(array(
-					'S_DM_GUESTS_ENABLE' => true,
-				));
-			}
-
-			if ($dm_qc_config['show_index'])
-			{
-				$this->template->assign_vars(array(
-					'S_DM_SHOW_INDEX' => true,
-				));
-			}
 
 			$this->template->assign_vars(array(
 				'S_VIEW_QUOTE'	=> ($this->auth->acl_gets('u_dm_qc_view')) ? true : false,

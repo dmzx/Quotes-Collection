@@ -111,14 +111,14 @@ class quotescollection_install extends \phpbb\db\migration\migration
 		{
 			$sql_ary = array(
 				array(
-					'pagination_acp' => '5',
-					'pagination_user' => '5',
-					'approval_needed' => '1',
-					'qc_enable' => '1',
-					'qc_guests' => '1',
-					'ups_points' => '0',
-					'show_index' => '1',
-					'delay_set'	=> '0',
+					'pagination_acp' 	=> '5',
+					'pagination_user'	=> '5',
+					'approval_needed' 	=> '1',
+					'qc_enable' 		=> '1',
+					'qc_guests' 		=> '1',
+					'ups_points' 		=> '0',
+					'show_index' 		=> '1',
+					'delay_set'			=> '0',
 				),
 			);
 			// Insert sample data
