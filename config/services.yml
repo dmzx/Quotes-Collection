@@ -10,6 +10,7 @@ services:
             - '@auth'
             - '@controller.helper'
             - '@cache'
+            - '@?phpbb.collapsiblecategories.operator'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%dmzx.quotescollection.table.dm_qc%'

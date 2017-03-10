@@ -9,39 +9,51 @@
 
 namespace dmzx\quotescollection\controller;
 
+use phpbb\template\template;
+use phpbb\user;
+use phpbb\auth\auth;
+use phpbb\db\driver\driver_interface as db_interface;
+use phpbb\request\request_interface;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\cache\service as cache_interface;
+use phpbb\pagination;
+use phpbb\log\log_interface;
+use phpbb\extension\manager;
+
 class main
 {
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var db_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\cache\service */
+	/** @var cache_interface */
 	protected $cache;
 
-	/** @var \phpbb\pagination */
+	/** @var pagination */
 	protected $pagination;
 
-	/** @var \phpbb\log\log_interface */
+	/** @var log_interface */
 	protected $log;
 
-	/** @var \phpbb\extension\manager */
+	/** @var manager */
 	protected $extension_manager;
 
 	/** @var string */
@@ -59,35 +71,35 @@ class main
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\auth\auth					$auth
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\controller\helper		 	$helper
-	* @param \phpbb\cache\service		 		$cache
-	* @param \phpbb\pagination					$pagination
-	* @param \\phpbb\log\log_interface			$log
-	* @param \phpbb\extension\manager 			$extension_manager
-	* @param string								$root_path
-	* @param string								$php_ext
-	* @param string								$dm_qc_table
-	* @param string								$dm_qc_config_table
+	* @param template		 	$template
+	* @param user				$user
+	* @param auth				$auth
+	* @param db_interface		$db
+	* @param request_interface	$request
+	* @param config				$config
+	* @param helper		 		$helper
+	* @param cache_interface	$cache
+	* @param pagination			$pagination
+	* @param log_interface		$log
+	* @param manager			$extension_manager
+	* @param string				$root_path
+	* @param string				$php_ext
+	* @param string				$dm_qc_table
+	* @param string				$dm_qc_config_table
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\auth\auth $auth,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		\phpbb\cache\service $cache,
-		\phpbb\pagination $pagination,
-		\phpbb\log\log_interface $log,
-		\phpbb\extension\manager $extension_manager,
+		template $template,
+		user $user,
+		auth $auth,
+		db_interface $db,
+		request_interface $request,
+		config $config,
+		helper $helper,
+		cache_interface $cache,
+		pagination $pagination,
+		log_interface $log,
+		manager $extension_manager,
 		$root_path,
 		$php_ext,
 		$dm_qc_table,

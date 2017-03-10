@@ -86,4 +86,5 @@ $lang = array_merge($lang, array(
 	'DM_QC_SORT_POSTER'			=> 'Poster',
 	'DM_QC_SORT_DATE'			=> 'Date',
 	'DM_QC_VERSION'				=> 'Version',
+	'QUOTE_COLLAPSE_TITLE'		=> 'Collapse quotes',
 ));

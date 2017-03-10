@@ -10,29 +10,36 @@
 namespace dmzx\quotescollection\event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use phpbb\user;
+use phpbb\template\template;
+use phpbb\db\driver\driver_interface as db_interface;
+use phpbb\auth\auth;
+use phpbb\controller\helper;
+use phpbb\cache\service as cache_interface;
+use phpbb\collapsiblecategories\operator\operator as operator;
 
-/**
-* Event listener
-*/
 class listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var db_interface */
 	protected $db;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth\auth */
 	protected $auth;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\cache\service */
+	/** @var cache_interface */
 	protected $cache;
+
+	/** @var operator */
+	protected $operator;
 
 	/** @var string */
 	protected $root_path;
@@ -49,25 +56,27 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\user						$user
-	* @param \phpbb\template\template			$template
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\auth\auth					$auth
-	* @param \phpbb\controller\helper			$helper
-	* @param \phpbb\cache\service		 		$cache
-	* @param string								$root_path
-	* @param string								$php_ext
-	* @param string								$dm_qc_table
-	* @param string								$dm_qc_config_table
+	* @param user				$user
+	* @param template			$template
+	* @param db_interface		$db
+	* @param auth				$auth
+	* @param helper				$helper
+	* @param cache_interface	$cache
+	* @param operator			$operator
+	* @param string				$root_path
+	* @param string				$php_ext
+	* @param string				$dm_qc_table
+	* @param string				$dm_qc_config_table
 	*
 	*/
 	public function __construct(
-		\phpbb\user $user,
-		\phpbb\template\template $template,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\auth\auth $auth,
-		\phpbb\controller\helper $helper,
-		\phpbb\cache\service $cache,
+		user $user,
+		template $template,
+		db_interface $db,
+		auth $auth,
+		helper $helper,
+		cache_interface $cache,
+		operator $operator = null,
 		$root_path,
 		$php_ext,
 		$dm_qc_table,
@@ -80,6 +89,7 @@ class listener implements EventSubscriberInterface
 		$this->auth 				= $auth;
 		$this->helper 				= $helper;
 		$this->cache 				= $cache;
+		$this->operator 			= $operator;
 		$this->root_path 			= $root_path;
 		$this->php_ext 				= $php_ext;
 		$this->dm_qc_table 			= $dm_qc_table;
@@ -112,6 +122,7 @@ class listener implements EventSubscriberInterface
 		$permissions['u_dm_qc_add'] = array('lang' => 'ACL_U_DM_QC_ADD', 'cat' => 'misc');
 		$permissions['u_dm_qc_view'] = array('lang' => 'ACL_U_DM_QC_VIEW', 'cat' => 'misc');
 		$permissions['u_dm_qc_delete'] = array('lang' => 'ACL_U_DM_QC_DELETE', 'cat' => 'misc');
+		$permissions['a_dm_qc_manage'] = array('lang' => 'ACL_A_DM_QC_MANAGE', 'cat' => 'misc');
 		$event['permissions'] = $permissions;
 	}
 
@@ -133,6 +144,7 @@ class listener implements EventSubscriberInterface
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
+
 			$dm_qc_config = array(
 				'qc_enable'			=> $row['qc_enable'],
 				'qc_guests'			=> $row['qc_guests'],
@@ -146,6 +158,19 @@ class listener implements EventSubscriberInterface
 			// cache this data forever, can only change in ACP
 			// this improves performance
 			$this->cache->put('_quote_config', $dm_qc_config);
+		}
+
+		if ($this->operator !== null)
+		{
+			$fid = 'quotescollection'; // can be any unique string to identify your extension's collapsible element
+			$this->template->assign_vars(array(
+				'QUOTE_IS_COLLAPSIBLE'	=> true,
+				'S_QUOTE_HIDDEN' 		=> in_array($fid, $this->operator->get_user_categories()),
+				'U_QUOTE_COLLAPSE_URL' 	=> $this->helper->route('phpbb_collapsiblecategories_main_controller', array(
+					'forum_id' 	=> $fid,
+					'hash' 		=> generate_link_hash('collapsible_' . $fid)
+				))
+			));
 		}
 
 		$sql = 'SELECT COUNT(id) AS number_quotes
@@ -249,5 +274,6 @@ class listener implements EventSubscriberInterface
 
 			return;
 		}
+		$this->db->sql_freeresult($result);
 	}
 }

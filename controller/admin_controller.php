@@ -9,30 +9,39 @@
 
 namespace dmzx\quotescollection\controller;
 
+use phpbb\template\template;
+use phpbb\user;
+use phpbb\db\driver\driver_interface as db_interface;
+use phpbb\request\request_interface;
+use phpbb\config\config;
+use phpbb\cache\service as cache_interface;
+use phpbb\pagination;
+use phpbb\log\log_interface;
+
 class admin_controller
 {
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var db_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request_interface */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\cache\service */
+	/** @var cache_interface */
 	protected $cache;
 
-	/** @var \phpbb\pagination */
+	/** @var pagination */
 	protected $pagination;
 
-	/** @var \phpbb\log\log_interface */
+	/** @var log_interface */
 	protected $log;
 
 	/** @var string */
@@ -44,27 +53,27 @@ class admin_controller
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\cache\service		 		$cache
-	* @param \phpbb\pagination					$pagination
-	* @param \\phpbb\log\log_interface			$log
-	* @param string								$dm_qc_table
-	* @param string								$dm_qc_config_table
+	* @param template		 	$template
+	* @param user				$user
+	* @param db_interface		$db
+	* @param request_interface	$request
+	* @param config				$config
+	* @param cache_interface	$cache
+	* @param pagination			$pagination
+	* @param log_interface		$log
+	* @param string				$dm_qc_table
+	* @param string				$dm_qc_config_table
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\cache\service $cache,
-		\phpbb\pagination $pagination,
-		\phpbb\log\log_interface $log,
+		template $template,
+		user $user,
+		db_interface $db,
+		request_interface $request,
+		config $config,
+		cache_interface $cache,
+		pagination $pagination,
+		log_interface $log,
 		$dm_qc_table,
 		$dm_qc_config_table
 	)
@@ -195,8 +204,7 @@ class admin_controller
 				'APPROVAL'		=> ($row['approve'] == 1) ? $this->user->lang['YES'] : $this->user->lang['NO'],
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' .$row['id'],
 				'U_DEL'			=> $this->u_action . '&amp;action=delete&amp;id=' .$row['id'],
-				)
-			);
+			));
 		}
 		$this->db->sql_freeresult($result);
 

@@ -36,4 +36,5 @@ $lang = array_merge($lang, array(
 	'ACL_U_DM_QC_ADD'		=> 'Can add quotes',
 	'ACL_U_DM_QC_DELETE'	=> 'Can delete own quotes',
 	'ACL_U_DM_QC_VIEW'		=> 'Can view quotes',
+	'ACL_A_DM_QC_MANAGE' 	=> 'Can manage quotes'
 ));

@@ -14,9 +14,18 @@
 				<dl>
 					<dt>{L_DM_QC_HEADER}</dt>
 				</dl>
+				<!-- IF QUOTE_IS_COLLAPSIBLE -->
+				<a href="{U_QUOTE_COLLAPSE_URL}"
+					class="collapse-btn collapse-<!-- IF S_QUOTE_HIDDEN -->show<!-- ELSE -->hide<!-- ENDIF -->"
+					data-hidden="{S_QUOTE_HIDDEN}"
+					data-ajax="phpbb_collapse"
+					data-overlay="true"
+					title="{L_QUOTE_COLLAPSE_TITLE}">
+				</a>
+				<!-- ENDIF -->
 			</li>
 		</ul>
-		<ul class="topiclist forums">
+		<ul class="topiclist forums<!-- IF QUOTE_IS_COLLAPSIBLE --> collapsible<!-- ENDIF -->">
 			<li>
 				<dl>
 					<dt>

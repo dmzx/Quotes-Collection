@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "The DM Quotes Collection is a simple tool, where you can start collecting quotes. These will be display on the index page in a random order. There are different settings possible in the ACP, where you also can manage the quotes.",
 	"homepage": "http://www.dmzx-web.net",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"time": "2017-03-10",
 	"keywords": [
 		"phpbb",
