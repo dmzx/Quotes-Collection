@@ -38,9 +38,6 @@ class listener implements EventSubscriberInterface
 	/** @var cache_interface */
 	protected $cache;
 
-	/** @var operator */
-	protected $operator;
-
 	/** @var string */
 	protected $root_path;
 
@@ -53,6 +50,9 @@ class listener implements EventSubscriberInterface
 	/** @var string */
 	protected $dm_qc_config_table;
 
+	/** @var operator */
+	protected $operator;
+
 	/**
 	* Constructor
 	*
@@ -62,11 +62,11 @@ class listener implements EventSubscriberInterface
 	* @param auth				$auth
 	* @param helper				$helper
 	* @param cache_interface	$cache
-	* @param operator			$operator
 	* @param string				$root_path
 	* @param string				$php_ext
 	* @param string				$dm_qc_table
 	* @param string				$dm_qc_config_table
+	* @param operator			$operator
 	*
 	*/
 	public function __construct(
@@ -76,11 +76,11 @@ class listener implements EventSubscriberInterface
 		auth $auth,
 		helper $helper,
 		cache_interface $cache,
-		operator $operator = null,
 		$root_path,
 		$php_ext,
 		$dm_qc_table,
-		$dm_qc_config_table
+		$dm_qc_config_table,
+		operator $operator = null
 	)
 	{
 		$this->user					= $user;
