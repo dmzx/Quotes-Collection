@@ -173,7 +173,7 @@ class listener implements EventSubscriberInterface
 				'GO_ACP'		=> sprintf($this->user->lang['DM_QC_CHECK_ACP'], '<a href="' . $go_acp . '">', '</a>'),
 			));
 		}
-		elseif ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1)
+		else if ($row && $this->auth->acl_gets('a_dm_qc_manage') && $number_quotes > 1)
 		{
 			$go_acp = append_sid($this->root_path . 'adm/index.' . $this->php_ext . '?sid=' . $this->user->session_id, 'i=-dmzx-quotescollection-acp-quotescollection_module&mode=release_quotes', true);
 
