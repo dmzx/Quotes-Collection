@@ -1,20 +1,20 @@
 {
 	"name": "dmzx/quotescollection",
 	"type": "phpbb-extension",
-	"description": "The DM Quotes Collection is a simple tool, where you can start collecting quotes. These will be display on the index page in a random order. There are different settings possible in the ACP, where you also can manage the quotes.",
-	"homepage": "http://www.dmzx-web.net",
-	"version": "1.0.5",
-	"time": "2017-03-10",
+	"description": "The DM Quotes Collection is a simple tool, where you can start collecting quotes. These will be display on the index/viewtopic/viewforum page in a random order. There are different settings possible in the ACP, where you also can manage the quotes.",
+	"homepage": "https://www.dmzx-web.net",
+	"version": "1.0.7",
+	"time": "2019-10-09",
 	"keywords": [
 		"phpbb",
 		"extension",
 		"quotescollection"
 	],
-	"license": "GPL-2.0",
+	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "dmzx",
-			"homepage": "http://www.dmzx-web.net",
+			"homepage": "https://www.dmzx-web.net",
 			"email": "info@dmzx-web.net",
 			"role": "Extension Developer"
 		},
@@ -25,8 +25,8 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.3",
-		"phpbb/phpbb": ">=3.1.0,<3.3"
+		"php": ">=5.4",
+		"composer/installers": "~1.0"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"
@@ -34,12 +34,14 @@
 	"extra": {
 		"display-name": "Quotes Collection",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.0,<3.3"
+			"phpbb/phpbb": ">=3.2.0,<4.0.0@dev"
 		},
 		"version-check": {
 			"host": "www.dmzx-web.net",
 			"directory": "/versions",
-			"filename": "quotescollection_version.json"
+			"filename": "quotescollection_version.json",
+			"ssl": true
+
 		}
 	}
 }

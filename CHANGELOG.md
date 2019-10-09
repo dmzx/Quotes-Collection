@@ -1,4 +1,19 @@
-## Changelog
+## Quotes Collection Changelog
+
+### 1.0.7 - 2019-10-09
+
+- Drop support 3.1.x
+- Changed code for delete button and data-ajax.
+- Changed code for Collapsible Categories 2.
+- Twig update.
+
+
+### 1.0.6 - 2018-06-20
+
+- Update code for fa icon.
+- Update code in listener for viewtopic and viewforum.
+- Update code in acp controller.
+- Update code in acp language file.
 
 ### 1.0.5 - 2017-03-10
 

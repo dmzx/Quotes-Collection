@@ -1,18 +1,18 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDE 'overall_header.html' %}
 
-<!-- IF S_DM_QC_ADD and S_ADD_QUOTE -->
-<form action="{S_ACTION}" method="post">
+{% if S_DM_QC_ADD and S_ADD_QUOTE %}
+<form action="{{ S_ACTION }}" method="post">
 	<div id="tabs" class="tabs">
 		<ul>
-			<!-- IF S_VIEW_QUOTE -->
-			<li class="tab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
-			<!-- ENDIF -->
-			<!-- IF S_ADD_QUOTE -->
-			<li class="tab activetab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
-			<!-- ENDIF -->
-			<!-- IF S_USER_LOGGED_IN -->
-			<li class="tab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
-			<!-- ENDIF -->
+			{% if S_VIEW_QUOTE %}
+			<li class="tab"><a href="{{ U_DM_QC_ALL }}"><span>{{ lang('DM_QC_ALL') }}</span></a></li>
+			{% endif %}
+			{% if S_ADD_QUOTE %}
+			<li class="tab activetab"><a href="{{ U_DM_QC_ADD }}"><span>{{ lang('DM_QC_ADD') }}</span></a></li>
+			{% endif %}
+			{% if S_USER_LOGGED_IN %}
+			<li class="tab"><a href="{{ U_DM_QC_OWN }}"><span>{{ lang('DM_QC_OWN') }}</span></a></li>
+			{% endif %}
 		</ul>
 	</div>
 	<div class="panel bg3">
@@ -21,8 +21,8 @@
 				<div class="cp-mini">
 					<div class="inner">
 						<dl class="mini">
-							<dd><h3>{L_DM_QC_ADD_TITLE}</h3></dd>
-							<dd>{L_DM_QC_ADD_TITLE_DESC}</dd>
+							<dd><h3>{{ lang('DM_QC_ADD_TITLE') }}</h3></dd>
+							<dd>{{ lang('DM_QC_ADD_TITLE_DESC') }}</dd>
 						</dl>
 					</div>
 				</div>
@@ -33,17 +33,17 @@
 						<br />
 						<fieldset>
 							<dl>
-								<dt><label>{L_DM_QC_QUOTE}{L_COLON}</label><br /><span class="qc-explain">{L_DM_QC_QUOTE_EXPLAIN}</span></dt>
+								<dt><label>{{ lang('DM_QC_QUOTE') }}{{ lang('COLON') }}</label><br /><span class="qc-explain">{{ lang('DM_QC_QUOTE_EXPLAIN') }}</span></dt>
 								<dd><textarea id="quote" tabindex="3" class="inputbox" name="quote" cols="50" rows="3" ></textarea></dd>
 							</dl>
 							<dl>
-								<dt><label>{L_DM_QC_AUTHOR}{L_COLON}</label><br /><span class="qc-explain">{L_DM_QC_AUTHOR_EXPLAIN}</span></dt>
+								<dt><label>{{ lang('DM_QC_AUTHOR') }}{{ lang('COLON') }}</label><br /><span class="qc-explain">{{ lang('DM_QC_AUTHOR_EXPLAIN') }}</span></dt>
 								<dd><input type="text" class="inputbox autowidth" maxlength="255" name="author" size="50" value="" /></dd>
 							</dl>
 						</fieldset>
 						<fieldset class="submit-buttons">
-							{S_HIDDEN_FIELDS}
-							<input type="submit" tabindex="4" name="submit" value="{L_SUBMIT}" class="button1" />&nbsp;
+							{{ S_HIDDEN_FIELDS }}
+							<input type="submit" tabindex="4" name="submit" value="{{ lang('SUBMIT') }}" class="button1" />&nbsp;
 						</fieldset>
 					</div>
 				</div>
@@ -51,19 +51,19 @@
 		</div>
 	</div>
 </form>
-<!-- ENDIF -->
-<!-- IF S_DM_QC_OWN -->
+{% endif %}
+{% if S_DM_QC_OWN %}
 <div id="tabs" class="tabs">
 	<ul>
-		<!-- IF S_VIEW_QUOTE -->
-		<li class="tab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
-		<!-- ENDIF -->
-		<!-- IF S_ADD_QUOTE -->
-		<li class="tab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
-		<!-- ENDIF -->
-		<!-- IF S_USER_LOGGED_IN -->
-		<li class="tab activetab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
-		<!-- ENDIF -->
+		{% if S_VIEW_QUOTE %}
+		<li class="tab"><a href="{{ U_DM_QC_ALL }}"><span>{{ lang('DM_QC_ALL') }}</span></a></li>
+		{% endif %}
+		{% if S_ADD_QUOTE %}
+		<li class="tab"><a href="{{ U_DM_QC_ADD }}"><span>{{ lang('DM_QC_ADD') }}</span></a></li>
+		{% endif %}
+		{% if S_USER_LOGGED_IN %}
+		<li class="tab activetab"><a href="{{ U_DM_QC_OWN }}"><span>{{ lang('DM_QC_OWN') }}</span></a></li>
+		{% endif %}
 	</ul>
 </div>
 <div class="panel bg3">
@@ -72,14 +72,14 @@
 			<div class="cp-mini">
 				<div class="inner">
 					<dl class="mini">
-						<dd><h3>{L_DM_QC_OWN_TITLE}</h3></dd>
-						<dd>{L_DM_QC_OWN_TITLE_DESC}</dd>
+						<dd><h3>{{ lang('DM_QC_OWN_TITLE') }}</h3></dd>
+						<dd>{{ lang('DM_QC_OWN_TITLE_DESC') }}</dd>
 					</dl>
 				</div>
 			</div>
 		</div>
 		<div id="cp-main" class="ucp-main">
-		<h2>{L_DM_QC_POSTER} {S_USERNAME}</h2>
+		<h2>{{ lang('DM_QC_POSTER') }} {{ S_USERNAME }}</h2>
 			<div class="panel">
 				<div class="inner">
 					<dl>
@@ -87,31 +87,31 @@
 							<table class="table1 forabg qc-header">
 								<thead>
 									<tr>
-										<th class="qc-left"><span class="qc-quote-title">{L_DM_QC_QUOTE}</span></th>
-										<th class="qc-left">{L_DM_QC_AUTHOR}</th>
-										<th>{L_DM_QC_DATE}</th>
-										<th>{L_DM_QC_APPROVAL}</th>
-										<!-- IF S_DELETE_QUOTE -->
-										<th><span class="qc-delete">{L_DM_QC_DELETE}</span></th>
-										<!-- ENDIF -->
+										<th class="qc-left"><span class="qc-quote-title">{{ lang('DM_QC_QUOTE') }}</span></th>
+										<th class="qc-left">{{ lang('DM_QC_AUTHOR') }}</th>
+										<th>{{ lang('DM_QC_DATE') }}</th>
+										<th>{{ lang('DM_QC_APPROVAL') }}</th>
+										{% if S_DELETE_QUOTE %}
+										<th><span class="qc-delete">{{ lang('DM_QC_DELETE') }}</span></th>
+										{% endif %}
 									</tr>
 								</thead>
 								<tbody>
-									<!-- BEGIN quotes -->
-									<!-- IF quotes.S_ROW_COUNT is even --><tr class="bg2 qc-noborder-radius"><!-- ELSE --><tr class="bg3 qc-noborder-radius"><!-- ENDIF -->
-										<td class="qc-left">{quotes.QUOTE}</td>
-										<td class="qc-left qc-nowrap">{quotes.AUTHOR}</td>
-										<td class="qc-nowrap">{quotes.DATE}</td>
-										<td>{quotes.APPROVAL}</td>
-										<!-- IF S_DELETE_QUOTE -->
-										<td>{quotes.DELETE}</td>
-										<!-- ENDIF -->
+									{% for quotes in loops.quotes %}
+									{% if quotes.S_ROW_COUNT is even %}<tr class="bg2 qc-noborder-radius">{% else %}<tr class="bg3 qc-noborder-radius">{% endif %}
+										<td class="qc-left">{{ quotes.QUOTE }}</td>
+										<td class="qc-left qc-nowrap">{{ quotes.AUTHOR }}</td>
+										<td class="qc-nowrap">{{ quotes.DATE }}</td>
+										<td>{{ quotes.APPROVAL }}</td>
+										{% if S_DELETE_QUOTE %}
+										<td>{{ quotes.DELETE }}</td>
+										{% endif %}
 									</tr>
-									<!-- BEGINELSE -->
+									{% else %}
 									<tr class="bg2 qc-noborder-radius">
-										<td colspan="<!-- IF S_DELETE_QUOTE -->5<!-- ELSE -->4<!-- ENDIF -->">{L_DM_QC_NO_QUOTES}</td>
+										<td colspan="{% if S_DELETE_QUOTE %}5{% else %}4{% endif %}">{{ lang('DM_QC_NO_QUOTES') }}</td>
 									</tr>
-									<!-- END quotes -->
+									{% endfor %}
 								</tbody>
 							</table>
 						</dd>
@@ -119,34 +119,34 @@
 				</div>
 			</div>
 			<div class="action-bar bottom">
-			<!-- IF .pagination or TOTAL_QUOTES -->
+			{% if loops.pagination|length or TOTAL_QUOTES %}
 				<div class="pagination">
-					{TOTAL_QUOTES}
-					<!-- IF .pagination -->
-					<!-- INCLUDE pagination.html -->
-					<!-- ELSE -->
-					 &bull; {PAGE_NUMBER}
-					<!-- ENDIF -->
+					{{ TOTAL_QUOTES }}
+					{% if loops.pagination|length %}
+					{% INCLUDE 'pagination.html' %}
+					{% else %}
+					 &bull; {{ PAGE_NUMBER }}
+					{% endif %}
 				</div>
-			<!-- ENDIF -->
+			{% endif %}
 			</div>
 		</div>
 	</div>
 </div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF S_DM_QC_ALL and S_VIEW_QUOTE -->
+{% if S_DM_QC_ALL and S_VIEW_QUOTE %}
 <div id="tabs" class="tabs">
 	<ul>
-		<!-- IF S_VIEW_QUOTE -->
-		<li class="tab activetab"><a href="{U_DM_QC_ALL}"><span>{L_DM_QC_ALL}</span></a></li>
-		<!-- ENDIF -->
-		<!-- IF S_ADD_QUOTE -->
-		<li class="tab"><a href="{U_DM_QC_ADD}"><span>{L_DM_QC_ADD}</span></a></li>
-		<!-- ENDIF -->
-		<!-- IF S_USER_LOGGED_IN -->
-		<li class="tab"><a href="{U_DM_QC_OWN}"><span>{L_DM_QC_OWN}</span></a></li>
-		<!-- ENDIF -->
+		{% if S_VIEW_QUOTE %}
+		<li class="tab activetab"><a href="{{ U_DM_QC_ALL }}"><span>{{ lang('DM_QC_ALL') }}</span></a></li>
+		{% endif %}
+		{% if S_ADD_QUOTE %}
+		<li class="tab"><a href="{{ U_DM_QC_ADD }}"><span>{{ lang('DM_QC_ADD') }}</span></a></li>
+		{% endif %}
+		{% if S_USER_LOGGED_IN %}
+		<li class="tab"><a href="{{ U_DM_QC_OWN }}"><span>{{ lang('DM_QC_OWN') }}</span></a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -156,8 +156,8 @@
 			<div class="cp-mini">
 				<div class="inner">
 					<dl class="mini">
-						<dd><h3>{L_DM_QC_ALL_TITLE}</h3></dd>
-						<dd>{L_DM_QC_ALL_TITLE_DESC}</dd>
+						<dd><h3>{{ lang('DM_QC_ALL_TITLE') }}</h3></dd>
+						<dd>{{ lang('DM_QC_ALL_TITLE_DESC') }}</dd>
 					</dl>
 				</div>
 			</div>
@@ -170,25 +170,25 @@
 							<table class="table1 forabg qc-header">
 								<thead>
 									<tr>
-										<th class="qc-left"><span class="qc-quote-title">{L_DM_QC_QUOTE}</span></th>
-										<th class="qc-left">{L_DM_QC_AUTHOR}</th>
-										<th class="qc-nowrap">{L_DM_QC_POSTER}</th>
-										<th>{L_DM_QC_DATE}</th>
+										<th class="qc-left"><span class="qc-quote-title">{{ lang('DM_QC_QUOTE') }}</span></th>
+										<th class="qc-left">{{ lang('DM_QC_AUTHOR') }}</th>
+										<th class="qc-nowrap">{{ lang('DM_QC_POSTER') }}</th>
+										<th>{{ lang('DM_QC_DATE') }}</th>
 									</tr>
 								</thead>
 								<tbody>
-									<!-- BEGIN quotes_all -->
-									<!-- IF quotes_all.S_ROW_COUNT is even --><tr class="bg2 qc-noborder-radius"><!-- ELSE --><tr class="bg3 qc-noborder-radius"><!-- ENDIF -->
-										<td class="qc-left">{quotes_all.QUOTE} </td>
-										<td class="qc-left qc-nowrap">{quotes_all.AUTHOR}</td>
-										<td class="qc-nowrap">{quotes_all.POSTER}</td>
-										<td class="qc-nowrap">{quotes_all.DATE}</td>
+									{% for quotes_all in loops.quotes_all %}
+									{% if quotes_all.S_ROW_COUNT is even %}<tr class="bg2 qc-noborder-radius">{% else %}<tr class="bg3 qc-noborder-radius">{% endif %}
+										<td class="qc-left">{{ quotes_all.QUOTE }} </td>
+										<td class="qc-left qc-nowrap">{{ quotes_all.AUTHOR }}</td>
+										<td class="qc-nowrap">{{ quotes_all.POSTER }}</td>
+										<td class="qc-nowrap">{{ quotes_all.DATE }}</td>
 									</tr>
-									<!-- BEGINELSE -->
+									{% else %}
 									<tr class="bg2 qc-noborder-radius">
-										<td colspan="4">{L_DM_QC_NO_QUOTES}</td>
+										<td colspan="4">{{ lang('DM_QC_NO_QUOTES') }}</td>
 									</tr>
-									<!-- END quotes_all -->
+									{% endfor %}
 								</tbody>
 							</table>
 						</dd>
@@ -196,27 +196,27 @@
 				</div>
 			</div>
 			<div class="action-bar bottom">
-				<!-- IF .pagination or TOTAL_QUOTES -->
+				{% if loops.pagination|length or TOTAL_QUOTES %}
 					<div class="pagination">
-						{TOTAL_QUOTES}
-						<!-- IF .pagination -->
-						<!-- INCLUDE pagination.html -->
-						<!-- ELSE -->
-						 &bull; {PAGE_NUMBER}
-						<!-- ENDIF -->
+						{{ TOTAL_QUOTES }}
+						{% if loops.pagination|length %}
+						{% INCLUDE 'pagination.html' %}
+						{% else %}
+						 &bull; {{ PAGE_NUMBER }}
+						{% endif %}
 					</div>
-				<!-- ENDIF -->
+				{% endif %}
 			 </div>
 		</div>
 	</div>
 </div>
 <br />
-<form action="{S_QUOTES_ACTION}" method="post">
+<form action="{{ S_QUOTES_ACTION }}" method="post">
 	<fieldset class="display-options">
-		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+		<label>{{ lang('SORT_BY') }} {{ S_SELECT_SORT_KEY }}</label>
+		<label>{{ S_SELECT_SORT_DIR }} <input type="submit" name="sort" value="{{ lang('GO') }}" class="button2" /></label>
 	</fieldset>
 </form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDE 'overall_footer.html' %}

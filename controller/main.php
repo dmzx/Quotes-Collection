@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Quotes Collection
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+* @copyright (c) 2015 dmzx - https://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -175,6 +175,11 @@ class main
 			$this->cache->put('_quote_config', $dm_qc_config);
 		}
 
+		if (!$dm_qc_config['qc_enable'])
+		{
+			trigger_error('NOT_AUTHORISED');
+		}
+
 		$start = $this->request->variable('start', 0);
 		$number = $dm_qc_config['pagination_user'];
 
@@ -325,7 +330,7 @@ class main
 						'POSTER'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'DATE'			=> $this->user->format_date($row['post_date']),
 						'APPROVAL'		=> ($row['approve'] == 1) ? $this->user->lang['YES'] : $this->user->lang['NO'],
-						'DELETE'		=> '<a href=" ' . $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'delete', 'id' => $row['id'])) . '"><img src="' . $board_url . 'ext/dmzx/quotescollection/styles/all/theme/images/icon_delete.gif" title="' . $this->user->lang['DM_QC_DELETE'] . '"></a>',
+						'DELETE'		=> '<a href=" ' . $this->helper->route('dmzx_quotescollection_controller', array('mode' => 'delete', 'id' => $row['id'])) . '" data-ajax="row_delete"><i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">' . $this->user->lang['DM_QC_DELETE'] . '</span></a>',
 					));
 				}
 				$this->db->sql_freeresult($result);

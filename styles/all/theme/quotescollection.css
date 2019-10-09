@@ -1,6 +1,3 @@
-/* DM Quotes Collection Stylesheet */
-.icon-quotes { background-image: url("./images/icon_quotes.gif"); }
-
 /* Random Quote Index */
 .qc-quotes { margin-top: 6px;font-size: 1.0em; }
 
@@ -28,3 +25,8 @@
 .qc-center { text-align: center; }
 
 .qc-noborder-radius { border-radius: none; }
+
+.quote-collapse {
+	display: none;
+	line-height: 0;
+}

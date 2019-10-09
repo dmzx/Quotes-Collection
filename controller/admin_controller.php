@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Quotes Collection
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+* @copyright (c) 2015 dmzx - https://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -103,14 +103,16 @@ class admin_controller
 		if ($this->request->is_set_post('submit'))
 		{
 			$sql_ary = array (
-				'qc_guests'			=> $this->request->variable('guests_enable', 0),
-				'qc_enable'			=> $this->request->variable('qc_enable', 0),
-				'approval_needed' 	=> $this->request->variable('approval_enable', 0),
-				'pagination_acp'	=> $this->request->variable('pagination_acp', 0),
-				'pagination_user' 	=> $this->request->variable('pagination_user', 0),
-				'ups_points' 		=> $this->request->variable('ups_points', 0.00),
-				'show_index' 		=> $this->request->variable('show_index', 0),
-				'delay_set' 		=> $this->request->variable('delay_set', 0),
+				'qc_guests'				=> $this->request->variable('guests_enable', 0),
+				'qc_enable'				=> $this->request->variable('qc_enable', 0),
+				'approval_needed' 		=> $this->request->variable('approval_enable', 0),
+				'pagination_acp'		=> $this->request->variable('pagination_acp', 0),
+				'pagination_user' 		=> $this->request->variable('pagination_user', 0),
+				'ups_points' 			=> $this->request->variable('ups_points', 0.00),
+				'show_index' 			=> $this->request->variable('show_index', 0),
+				'delay_set' 			=> $this->request->variable('delay_set', 0),
+				'qc_enable_viewtopic'	=> $this->request->variable('qc_enable_viewtopic', 0),
+				'qc_enable_viewforum'	=> $this->request->variable('qc_enable_viewforum', 0),
 			);
 
 			// Check if acp pagination is below 5
@@ -136,15 +138,17 @@ class admin_controller
 		else
 		{
 			$this->template->assign_vars(array(
-				'S_QC_CONFIG'		=> true,
-				'QC_ENABLE'			=> $dm_qc_config['qc_enable'],
-				'GUESTS_ENABLE'		=> $dm_qc_config['qc_guests'],
-				'APPROVAL_ENABLE' 	=> $dm_qc_config['approval_needed'],
-				'PAGINATION_ACP' 	=> $dm_qc_config['pagination_acp'],
-				'PAGINATION_USER' 	=> $dm_qc_config['pagination_user'],
-				'SHOW_INDEX' 		=> $dm_qc_config['show_index'],
-				'DELAY_SET' 		=> $dm_qc_config['delay_set'],
-				'DM_QC_VERSION'		=> $this->config['dm_qc_version'],
+				'S_QC_CONFIG'			=> true,
+				'QC_ENABLE'				=> $dm_qc_config['qc_enable'],
+				'QC_ENABLE_VIEWTOPIC'	=> $dm_qc_config['qc_enable_viewtopic'],
+				'QC_ENABLE_VIEWFORUM'	=> $dm_qc_config['qc_enable_viewforum'],
+				'GUESTS_ENABLE'			=> $dm_qc_config['qc_guests'],
+				'APPROVAL_ENABLE' 		=> $dm_qc_config['approval_needed'],
+				'PAGINATION_ACP' 		=> $dm_qc_config['pagination_acp'],
+				'PAGINATION_USER' 		=> $dm_qc_config['pagination_user'],
+				'SHOW_INDEX' 			=> $dm_qc_config['show_index'],
+				'DELAY_SET' 			=> $dm_qc_config['delay_set'],
+				'DM_QC_VERSION'			=> $this->config['dm_qc_version'],
 			));
 		}
 	}

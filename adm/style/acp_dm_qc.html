@@ -1,216 +1,227 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDE 'overall_header.html' %}
 
 <a name="maincontent"></a>
 
-<!-- IF S_ERROR -->
+{% if S_ERROR %}
 <div class="errorbox">
-	<h3>{L_WARNING}</h3>
-	<p>{ERROR_MSG}</p>
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
 </div>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF S_QC_CONFIG -->
-<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_CONFIG}</h1>
-<p>{L_ACP_DM_QC_CONFIG_EXPLAIN}</p>
+{% if S_QC_CONFIG %}
+<h1>{{ lang('ACP_DM_QC') }} - {{ lang('ACP_DM_QC_CONFIG') }}</h1>
+<p>{{ lang('ACP_DM_QC_CONFIG_EXPLAIN') }}</p>
 
 <p><img src="https://img.shields.io/badge/{{ lang('Version') }}-{{ DM_QC_VERSION }}-green.svg?style=plastic" /></p>
 
-<form id="acp_dm_qc_config" method="post" action="{U_ACTION}">
+<form id="acp_dm_qc_config" method="post" action="{{ U_ACTION }}">
 	<fieldset>
-		<legend>{L_ACP_DM_QC_CONFIG}</legend>
+		<legend>{{ lang('ACP_DM_QC_CONFIG') }}</legend>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_ENABLE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_ENABLE_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="qc_enable" value="1"<!-- IF QC_ENABLE --> id="qc_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="qc_enable" value="0"<!-- IF not QC_ENABLE --> id="qc_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_ENABLE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="qc_enable" value="1"{% if QC_ENABLE %} id="qc_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="qc_enable" value="0"{% if not QC_ENABLE %} id="qc_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_INDEX}{L_COLON}</label><br /><span>{L_ACP_DM_QC_INDEX_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="show_index" value="1"<!-- IF SHOW_INDEX --> id="show_index" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="show_index" value="0"<!-- IF not SHOW_INDEX --> id="show_index" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_INDEX') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_INDEX_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="show_index" value="1"{% if SHOW_INDEX %} id="show_index" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="show_index" value="0"{% if not SHOW_INDEX %} id="show_index" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_GUESTS}{L_COLON}</label><br /><span>{L_ACP_DM_QC_GUESTS_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="guests_enable" value="1"<!-- IF GUESTS_ENABLE --> id="guests_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="guests_enable" value="0"<!-- IF not GUESTS_ENABLE --> id="guests_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_ENABLE_VIEWFORUM') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_ENABLE_VIEWFORUM_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="qc_enable_viewforum" value="1"{% if QC_ENABLE_VIEWFORUM %} id="qc_enable_viewforum" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="qc_enable_viewforum" value="0"{% if not QC_ENABLE_VIEWFORUM %} id="qc_enable_viewforum" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+
+		<dl>
+			<dt><label>{{ lang('ACP_DM_QC_ENABLE_VIEWTOPIC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_ENABLE_VIEWTOPIC_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="qc_enable_viewtopic" value="1"{% if QC_ENABLE_VIEWTOPIC %} id="qc_enable_viewtopic" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="qc_enable_viewtopic" value="0"{% if not QC_ENABLE_VIEWTOPIC %} id="qc_enable_viewtopic" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_APPROVAL}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVAL_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="approval_enable" value="1"<!-- IF APPROVAL_ENABLE --> id="approval_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="approval_enable" value="0"<!-- IF not APPROVAL_ENABLE --> id="approval_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_GUESTS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_GUESTS_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="guests_enable" value="1"{% if GUESTS_ENABLE %} id="guests_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="guests_enable" value="0"{% if not GUESTS_ENABLE %} id="guests_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="pagination_acp">{L_ACP_DM_QC_PAGI_ACP}{L_COLON}</label><br /><span>{L_ACP_DM_QC_PAGI_ACP_EXPLAIN}</span></dt>
-			<dd><input type="text" id="pagination_acp" name="pagination_acp" value="{PAGINATION_ACP}" maxlength="8" size="10" /></dd>
+			<dt><label>{{ lang('ACP_DM_QC_APPROVAL') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_APPROVAL_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="approval_enable" value="1"{% if APPROVAL_ENABLE %} id="approval_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="approval_enable" value="0"{% if not APPROVAL_ENABLE %} id="approval_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="pagination_acp">{L_ACP_DM_QC_PAGI_USER}{L_COLON}</label><br /><span>{L_ACP_DM_QC_PAGI_USER_EXPLAIN}</span></dt>
-			<dd><input type="text" id="pagination_user" name="pagination_user" value="{PAGINATION_USER}" maxlength="8" size="10" /></dd>
+			<dt><label for="pagination_acp">{{ lang('ACP_DM_QC_PAGI_ACP') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_PAGI_ACP_EXPLAIN') }}</span></dt>
+			<dd><input type="text" id="pagination_acp" name="pagination_acp" value="{{ PAGINATION_ACP }}" maxlength="8" size="10" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="delay">{L_ACP_DM_QC_DELAY}{L_COLON}</label><br /><span>{L_ACP_DM_QC_DELAY_EXPLAIN}</span></dt>
-			<dd><input type="text" id="delay" name="delay_set" value="{DELAY_SET}" maxlength="8" size="10" /> min.</dd>
+			<dt><label for="pagination_acp">{{ lang('ACP_DM_QC_PAGI_USER') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_PAGI_USER_EXPLAIN') }}</span></dt>
+			<dd><input type="text" id="pagination_user" name="pagination_user" value="{{ PAGINATION_USER }}" maxlength="8" size="10" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="delay">{{ lang('ACP_DM_QC_DELAY') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_DELAY_EXPLAIN') }}</span></dt>
+			<dd><input type="text" id="delay" name="delay_set" value="{{ DELAY_SET }}" maxlength="8" size="10" /> min.</dd>
 		</dl>
 	</fieldset>
 	<p class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
 	</p>
 </form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF S_QC_LIST -->
-<!-- IF S_QC_RELEASE -->
-<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_RELEASE}</h1>
-<p>{L_ACP_DM_QC_RELEASE_EXPLAIN}</p>
-<!-- ELSE -->
-<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_EDIT}</h1>
-<p>{L_ACP_DM_QC_EDIT_EXPLAIN}</p>
+{% if S_QC_LIST %}
+{% if S_QC_RELEASE %}
+<h1>{{ lang('ACP_DM_QC') }} - {{ lang('ACP_DM_QC_RELEASE') }}</h1>
+<p>{{ lang('ACP_DM_QC_RELEASE_EXPLAIN') }}</p>
+{% else %}
+<h1>{{ lang('ACP_DM_QC') }} - {{ lang('ACP_DM_QC_EDIT') }}</h1>
+<p>{{ lang('ACP_DM_QC_EDIT_EXPLAIN') }}</p>
 
-<form id="add_quote" method="post" action="{S_ACTION}">
+<form id="add_quote" method="post" action="{{ S_ACTION }}">
 	<fieldset class="tabulated">
 		<input type="hidden" name="action" value="add_quote" />
-		<input class="button2" name="add_quote" type="submit" value="{L_ACP_DM_QC_ADD}" />
-		{S_FORM_TOKEN}
+		<input class="button2" name="add_quote" type="submit" value="{{ lang('ACP_DM_QC_ADD') }}" />
+		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>
 
-<!-- ENDIF -->
+{% endif %}
 <p>&nbsp;</p>
-<!-- IF .pagination or TOTAL_QUOTES -->
+{% if loops.pagination|length or TOTAL_QUOTES %}
 <div class="pagination">
-	{TOTAL_QUOTES}
-	<!-- IF .pagination -->
-		<!-- INCLUDE pagination.html -->
-	<!-- ELSE -->
-		&bull; {PAGE_NUMBER}
-	<!-- ENDIF -->
+	{{ TOTAL_QUOTES }}
+	{% if loops.pagination|length %}
+		{% INCLUDE 'pagination.html' %}
+	{% else %}
+		&bull; {{ PAGE_NUMBER }}
+	{% endif %}
 </div>
-<!-- ENDIF -->
+{% endif %}
 <table>
 	<thead>
 		<tr>
-			<th>{L_ACP_DM_QC_ID}</th>
-			<th>{L_ACP_DM_QC_QUOTE}</th>
-			<th>{L_ACP_DM_QC_AUTHOR}</th>
-			<th>{L_ACP_DM_QC_POSTER}</th>
-			<th>{L_ACP_DM_QC_DATE}</th>
-			<th>{L_ACP_DM_QC_APPROVE}</th>
-			<th>{L_ACTION}</th>
+			<th>{{ lang('ACP_DM_QC_ID') }}</th>
+			<th>{{ lang('ACP_DM_QC_QUOTE') }}</th>
+			<th>{{ lang('ACP_DM_QC_AUTHOR') }}</th>
+			<th>{{ lang('ACP_DM_QC_POSTER') }}</th>
+			<th>{{ lang('ACP_DM_QC_DATE') }}</th>
+			<th>{{ lang('ACP_DM_QC_APPROVE') }}</th>
+			<th>{{ lang('ACTION') }}</th>
 		</tr>
 	</thead>
 	<tbody>
-		<!-- BEGIN quotes -->
-		<!-- IF quotes.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
-			<td>{quotes.ID}</td>
-			<td style="text-align: center;">{quotes.QUOTE} </td>
-			<td style="text-align: center;">{quotes.AUTHOR}</td>
-			<td style="text-align: center;">{quotes.POSTER}</td>
-			<td style="text-align: center;">{quotes.DATE}</td>
-			<td style="text-align: center;">{quotes.APPROVAL}</td>
-			<td>&nbsp;<a href="{quotes.U_EDIT}">{ICON_EDIT}</a> <a href="{quotes.U_DEL}">{ICON_DELETE}</a>&nbsp;</td>
+		{% for quotes in loops.quotes %}
+		{% if quotes.S_ROW_COUNT is even %}<tr class="row1">{% else %}<tr class="row2">{% endif %}
+			<td>{{ quotes.ID }}</td>
+			<td style="text-align: center;">{{ quotes.QUOTE }} </td>
+			<td style="text-align: center;">{{ quotes.AUTHOR }}</td>
+			<td style="text-align: center;">{{ quotes.POSTER }}</td>
+			<td style="text-align: center;">{{ quotes.DATE }}</td>
+			<td style="text-align: center;">{{ quotes.APPROVAL }}</td>
+			<td>&nbsp;<a href="{{ quotes.U_EDIT }}">{{ ICON_EDIT }}</a> <a href="{{ quotes.U_DEL }}" data-ajax="row_delete">{{ ICON_DELETE }}</a>&nbsp;</td>
 		</tr>
-		<!-- BEGINELSE -->
+		{% else %}
 		<tr>
-			<td colspan="<!-- IF S_CLEAR_ALLOWED -->7<!-- ELSE -->6<!-- ENDIF -->">{L_ACP_DM_QC_NO_QUOTES}</td>
+			<td colspan="{% if S_CLEAR_ALLOWED %}7{% else %}6{% endif %}">{{ lang('ACP_DM_QC_NO_QUOTES') }}</td>
 		</tr>
-		<!-- END quotes -->
+		{% endfor %}
 	</tbody>
 </table>
-<!-- IF .pagination or TOTAL_QUOTES -->
+{% if loops.pagination|length or TOTAL_QUOTES %}
 <div class="pagination">
-	{TOTAL_QUOTES}
-	<!-- IF .pagination -->
-		<!-- INCLUDE pagination.html -->
-	<!-- ELSE -->
-		&bull; {PAGE_NUMBER}
-	<!-- ENDIF -->
+	{{ TOTAL_QUOTES }}
+	{% if loops.pagination|length %}
+		{% INCLUDE 'pagination.html' %}
+	{% else %}
+		&bull; {{ PAGE_NUMBER }}
+	{% endif %}
 </div>
-<!-- ENDIF -->
-<!-- IF not S_QC_RELEASE -->
-<form action="{S_QUOTES_ACTION}" method="post">
+{% endif %}
+{% if not S_QC_RELEASE %}
+<form action="{{ S_QUOTES_ACTION }}" method="post">
 	<fieldset class="display-options">
-		<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;
-		<input class="button2" type="submit" name="sort" value="{L_GO}" />
+		<span class="gensmall">{{ lang('SORT_BY') }}</span> {{ S_SELECT_SORT_KEY }} {{ S_SELECT_SORT_DIR }}&nbsp;
+		<input class="button2" type="submit" name="sort" value="{{ lang('GO') }}" />
 	</fieldset>
 </form>
-<!-- ENDIF -->
-<!-- ENDIF -->
+{% endif %}
+{% endif %}
 
-<!-- IF S_QC_ADD -->
-<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_ADD}</h1>
-<p>{L_ACP_DM_QC_ADD_EXPLAIN}</p>
+{% if S_QC_ADD %}
+<h1>{{ lang('ACP_DM_QC') }} - {{ lang('ACP_DM_QC_ADD') }}</h1>
+<p>{{ lang('ACP_DM_QC_ADD_EXPLAIN') }}</p>
 
-<form method="post" action="{U_ACTION}">
+<form method="post" action="{{ U_ACTION }}">
 	<p>
 		<input type="hidden" name="add_new" value="add_new" />
 	</p>
 	<fieldset>
-		<!-- IF S_QC_EDIT -->
-			<legend>{L_ACP_DM_QC_EDIT}</legend>
-		<!-- ELSE -->
-			<legend>{L_ACP_DM_QC_ADD}</legend>
-		<!-- ENDIF -->
+		{% if S_QC_EDIT %}
+			<legend>{{ lang('ACP_DM_QC_EDIT') }}</legend>
+		{% else %}
+			<legend>{{ lang('ACP_DM_QC_ADD') }}</legend>
+		{% endif %}
 		<dl>
-			<dt><label>{L_ACP_DM_QC_QUOTE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_QUOTE_EXPLAIN}</span></dt>
-			<dd><textarea rows="9" name="quote" cols="52">{QUOTE}</textarea></dd>
+			<dt><label>{{ lang('ACP_DM_QC_QUOTE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_QUOTE_EXPLAIN') }}</span></dt>
+			<dd><textarea rows="9" name="quote" cols="52">{{ QUOTE }}</textarea></dd>
 		</dl>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_AUTHOR}{L_COLON}</label><br /><span>{L_ACP_DM_QC_AUTHOR_EXPLAIN}</span></dt>
-			<dd><input type="text" name="author" size="52" value="{AUTHOR}" /></dd>
+			<dt><label>{{ lang('ACP_DM_QC_AUTHOR') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_AUTHOR_EXPLAIN') }}</span></dt>
+			<dd><input type="text" name="author" size="52" value="{{ AUTHOR }}" /></dd>
 		</dl>
-		<!-- IF S_QC_APPROVAL_NEEDED -->
+		{% if S_QC_APPROVAL_NEEDED %}
 		<dl>
-			<dt><label>{L_ACP_DM_QC_APPROVE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVE_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="approved" value="1"<!-- IF APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="approved" value="0"<!-- IF not APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_APPROVE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_APPROVE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="approved" value="1"{% if APPROVED %} id="approved" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="approved" value="0"{% if not APPROVED %} id="approved" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
-		<!-- ENDIF -->
+		{% endif %}
 	</fieldset>
 	<fieldset class="submit-buttons">
-		<legend>{L_SUBMIT}</legend>
-		<input class="button1" id="submit" name="submit" value="{L_SUBMIT}" type="submit" />&nbsp;
-		<input class="button2" id="reset" name="reset" value="{L_RESET}" type="reset" />
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="button1" id="submit" name="submit" value="{{ lang('SUBMIT') }}" type="submit" />&nbsp;
+		<input class="button2" id="reset" name="reset" value="{{ lang('RESET') }}" type="reset" />
 	</fieldset>
 </form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF S_QC_EDIT -->
-<h1>{L_ACP_DM_QC} - {L_ACP_DM_QC_EDIT}</h1>
-<p>{L_ACP_DM_QC_EDIT_EXPLAIN}</p>
+{% if S_QC_EDIT %}
+<h1>{{ lang('ACP_DM_QC') }} - {{ lang('ACP_DM_QC_EDIT') }}</h1>
+<p>{{ lang('ACP_DM_QC_EDIT_EXPLAIN') }}</p>
 
-<form method="post" action="{U_ACTION}">
+<form method="post" action="{{ U_ACTION }}">
 	<p>
-		<input type="hidden" name="id" value="{ID}" />
-		<input type="hidden" name="poster_id" value="{POSTER_ID}" />
+		<input type="hidden" name="id" value="{{ ID }}" />
+		<input type="hidden" name="poster_id" value="{{ POSTER_ID }}" />
 	</p>
 	<fieldset>
-		<!-- IF S_QC_EDIT -->
-			<legend>{L_ACP_DM_QC_EDIT}</legend>
-		<!-- ELSE -->
-			<legend>{L_ACP_DM_QC_ADD}</legend>
-		<!-- ENDIF -->
+		{% if S_QC_EDIT %}
+			<legend>{{ lang('ACP_DM_QC_EDIT') }}</legend>
+		{% else %}
+			<legend>{{ lang('ACP_DM_QC_ADD') }}</legend>
+		{% endif %}
 		<dl>
-			<dt><label>{L_ACP_DM_QC_QUOTE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_QUOTE_EXPLAIN}</span></dt>
-			<dd><textarea rows="9" name="quote" cols="52">{QUOTE}</textarea></dd>
+			<dt><label>{{ lang('ACP_DM_QC_QUOTE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_QUOTE_EXPLAIN') }}</span></dt>
+			<dd><textarea rows="9" name="quote" cols="52">{{ QUOTE }}</textarea></dd>
 		</dl>
 		<dl>
-			<dt><label>{L_ACP_DM_QC_AUTHOR}{L_COLON}</label><br /><span>{L_ACP_DM_QC_AUTHOR_EXPLAIN}</span></dt>
-			<dd><input type="text" name="author" size="52" value="{AUTHOR}" /></dd>
+			<dt><label>{{ lang('ACP_DM_QC_AUTHOR') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_AUTHOR_EXPLAIN') }}</span></dt>
+			<dd><input type="text" name="author" size="52" value="{{ AUTHOR }}" /></dd>
 		</dl>
-		<!-- IF S_QC_APPROVAL_NEEDED -->
+		{% if S_QC_APPROVAL_NEEDED %}
 		<dl>
-			<dt><label>{L_ACP_DM_QC_APPROVE}{L_COLON}</label><br /><span>{L_ACP_DM_QC_APPROVE_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="approved" value="1"<!-- IF APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="approved" value="0"<!-- IF not APPROVED --> id="approved" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label>{{ lang('ACP_DM_QC_APPROVE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_DM_QC_APPROVE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="approved" value="1"{% if APPROVED %} id="approved" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="approved" value="0"{% if not APPROVED %} id="approved" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
-		<!-- ENDIF -->
+		{% endif %}
 	</fieldset>
 	<fieldset class="submit-buttons">
-		<legend>{L_SUBMIT}</legend>
-		<input class="button1" id="submit" name="submit" value="{L_SUBMIT}" type="submit" />&nbsp;
-		<input class="button2" id="reset" name="reset" value="{L_RESET}" type="reset" />
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="button1" id="submit" name="submit" value="{{ lang('SUBMIT') }}" type="submit" />&nbsp;
+		<input class="button2" id="reset" name="reset" value="{{ lang('RESET') }}" type="reset" />
 	</fieldset>
 </form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDE 'overall_footer.html' %}

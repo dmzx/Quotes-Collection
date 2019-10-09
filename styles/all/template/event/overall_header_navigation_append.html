@@ -1,1 +1,3 @@
-<!-- IF S_QC_EXIST --><li class="small-icon icon-quotes"><a href="{U_DM_QUOTES}" title="{L_DM_QUOTES}">{L_DM_QUOTES}</a></li><!-- ENDIF -->
+{% if S_QC_EXIST and S_QC_ENABLE and S_USER_LOGGED_IN %}
+<li data-last-responsive="true"><a href="{{ U_DM_QUOTES }}" title="{{ lang('DM_QC_QUOTE_TITLE') }}" role="menuitem"><i class="icon fa-quora fa-fw" aria-hidden="true"></i><span>{{ lang('DM_QC_QUOTE_TITLE') }}</span></a></li>
+{% endif %}

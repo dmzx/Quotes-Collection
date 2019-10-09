@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Quotes Collection
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+* @copyright (c) 2015 dmzx - https://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -86,5 +86,8 @@ $lang = array_merge($lang, array(
 	'DM_QC_SORT_POSTER'			=> 'Poster',
 	'DM_QC_SORT_DATE'			=> 'Date',
 	'DM_QC_VERSION'				=> 'Version',
-	'QUOTE_COLLAPSE_TITLE'		=> 'Collapse quotes',
+	'DM_QC_COLLAPSE_TITLE'			=> [
+		0 => 'Hide quotes',
+		1 => 'Show quotes',
+	],
 ));

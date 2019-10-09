@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Quotes Collection
-* @copyright (c) 2015 dmzx - http://www.dmzx-web.net
+* @copyright (c) 2015 dmzx - https://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -89,11 +89,11 @@ class listener implements EventSubscriberInterface
 		$this->auth 				= $auth;
 		$this->helper 				= $helper;
 		$this->cache 				= $cache;
-		$this->operator 			= $operator;
 		$this->root_path 			= $root_path;
 		$this->php_ext 				= $php_ext;
 		$this->dm_qc_table 			= $dm_qc_table;
 		$this->dm_qc_config_table 	= $dm_qc_config_table;
+		$this->operator 			= $operator;
 	}
 
 	static public function getSubscribedEvents()
@@ -103,6 +103,8 @@ class listener implements EventSubscriberInterface
 			'core.permissions'					=> 'add_permission',
 			'core.page_header'					=> 'page_header',
 			'core.index_modify_page_title'		=> 'index_modify_page_title',
+			'core.viewforum_modify_page_title'	=> 'viewforum_modify_page_title',
+			'core.viewtopic_modify_page_title'	=> 'viewtopic_modify_page_title',
 		);
 	}
 
@@ -128,32 +130,62 @@ class listener implements EventSubscriberInterface
 
 	public function page_header($event)
 	{
+		$row = $this->config_all_values();
+
 		$this->template->assign_vars(array(
 			'S_QC_EXIST'	=> $this->auth->acl_gets('u_dm_qc_view'),
-			'L_DM_QUOTES'	=> $this->user->lang['DM_QC_QUOTE_TITLE'],
 			'U_DM_QUOTES'	=> $this->helper->route('dmzx_quotescollection_controller'),
+			'S_QC_ENABLE'	=> $row['qc_enable'],
 		));
 	}
+
 	public function index_modify_page_title($event)
+	{
+		$row = $this->config_all_values();
+
+		if ($row['show_index'])
+		{
+			$this->show_quote();
+		}
+	}
+
+	public function viewforum_modify_page_title($event)
+	{
+		$row = $this->config_all_values();
+
+		if ($row['qc_enable_viewforum'])
+		{
+			$this->show_quote();
+		}
+	}
+
+	public function viewtopic_modify_page_title($event)
+	{
+		$row = $this->config_all_values();
+
+		if ($row['qc_enable_viewtopic'])
+		{
+			$this->show_quote();
+		}
+	}
+
+	private function show_quote()
 	{
 		if (($dm_qc_config = $this->cache->get('_quote_config')) === false)
 		{
-			// Read out the config table
-			$sql = 'SELECT *
-				FROM ' . $this->dm_qc_config_table;
-			$result = $this->db->sql_query($sql);
-			$row = $this->db->sql_fetchrow($result);
-			$this->db->sql_freeresult($result);
+			$row = $this->config_all_values();
 
 			$dm_qc_config = array(
-				'qc_enable'			=> $row['qc_enable'],
-				'qc_guests'			=> $row['qc_guests'],
-				'show_index'		=> $row['show_index'],
-				'pagination_acp'	=> $row['pagination_acp'],
-				'pagination_user'	=> $row['pagination_user'],
-				'approval_needed'	=> $row['approval_needed'],
-				'delay_set'			=> $row['delay_set'],
-				'ups_points'		=> $row['ups_points'],
+				'qc_enable'					=> $row['qc_enable'],
+				'qc_guests'					=> $row['qc_guests'],
+				'show_index'				=> $row['show_index'],
+				'pagination_acp'			=> $row['pagination_acp'],
+				'pagination_user'			=> $row['pagination_user'],
+				'approval_needed'			=> $row['approval_needed'],
+				'delay_set'					=> $row['delay_set'],
+				'ups_points'				=> $row['ups_points'],
+				'qc_enable_viewforum'		=> $row['qc_enable_viewforum'],
+				'qc_enable_viewtopic'		=> $row['qc_enable_viewtopic'],
 			);
 			// cache this data forever, can only change in ACP
 			// this improves performance
@@ -245,11 +277,6 @@ class listener implements EventSubscriberInterface
 			$this->template->assign_var('S_DM_GUESTS_ENABLE', true);
 		}
 
-		if ($dm_qc_config['show_index'])
-		{
-			$this->template->assign_var('S_DM_SHOW_INDEX', true);
-		}
-
 		if (!$row || !$row['approve'])
 		{
 			return;
@@ -275,5 +302,17 @@ class listener implements EventSubscriberInterface
 			return;
 		}
 		$this->db->sql_freeresult($result);
+	}
+
+	private function config_all_values()
+	{
+		// Read out the config table
+		$sql = 'SELECT *
+			FROM ' . $this->dm_qc_config_table;
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		return $row;
 	}
 }
